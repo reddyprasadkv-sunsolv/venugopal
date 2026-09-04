@@ -40,6 +40,30 @@ export class HomePageComponent implements OnInit {
     this.selectedBook.set(null);
   }
 
+  getPillarIcon(idx: number): string {
+    switch (idx) {
+      case 0: return 'fa-solid fa-graduation-cap';
+      case 1: return 'fa-solid fa-briefcase';
+      case 2: return 'fa-solid fa-bullseye';
+      case 3: return 'fa-solid fa-trophy';
+      default: return 'fa-solid fa-star';
+    }
+  }
+
+  getPillarHighlights(idx: number): string[] {
+    switch (idx) {
+      case 0: return ['PhD, LLB, MBA-HR', 'Andhra University', '16+ Yrs Legacy'];
+      case 1: return ['Verch Consulting LLP', 'Strategic HR', 'Executive Search'];
+      case 2: return ['27,000+ Mentored', 'Skill Gap Eradication', 'Career Clarity'];
+      case 3: return ['3 World Records', '9+ Landmark Books', '125+ Keynotes'];
+      default: return [];
+    }
+  }
+
+  getPillarIndexNumber(idx: number): string {
+    return `0${idx + 1}`;
+  }
+
   private setupIntersectionObserver(): void {
     if (typeof IntersectionObserver === 'undefined') return;
 

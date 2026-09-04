@@ -129,26 +129,56 @@
     <div class="container">
       
       <div class="section-header">
-        <span class="section-tag">Core Philosophy</span>
+        <span class="section-tag"><i class="fa-solid fa-compass"></i> Core Philosophy</span>
         <h2><span class="gradient-text">Make Something Different!</span></h2>
         <p>A multidisciplinary visionary bridging strategic enterprise capability with grassroots youth empowerment.</p>
       </div>
 
-      <div class="bento-grid">
+      <div class="bento-pillars-grid">
         @for (pillar of bentoPillars(); track pillar.id; let idx = $index) {
-          <div class="glass-card pillar-card" [class.col-6]="true">
-            <div class="pillar-image-wrap">
-              <img [src]="pillar.image" [alt]="pillar.title" class="pillar-img">
-              <div class="pillar-img-gradient"></div>
-              <span class="pillar-tag">{{ pillar.tag }}</span>
+          <div class="pillar-card-v2 glass-card">
+            <!-- Glowing top accent line -->
+            <div class="pillar-top-glow"></div>
+            
+            <!-- Ambient watermarked background number -->
+            <div class="pillar-watermark-num">{{ getPillarIndexNumber(idx) }}</div>
+
+            <!-- Card Header: Icon Badge + Tag Pill -->
+            <div class="pillar-header">
+              <div class="pillar-icon-box">
+                <i [class]="getPillarIcon(idx)"></i>
+              </div>
+              <div class="pillar-tag-badge">
+                <span class="pillar-tag-dot"></span>
+                <span>{{ pillar.tag }}</span>
+              </div>
             </div>
+
+            <!-- Card Content -->
             <div class="pillar-body">
               <h3 class="pillar-title">{{ pillar.title }}</h3>
-              <h4 class="pillar-subtitle">{{ pillar.subtitle }}</h4>
+              <div class="pillar-role-badge">
+                <span class="gradient-text">{{ pillar.subtitle }}</span>
+              </div>
               <p class="pillar-desc">{{ pillar.description }}</p>
-              <a [routerLink]="pillar.linkUrl" class="pillar-link">
+              
+              <!-- Highlight Chips -->
+              <div class="pillar-chips-row">
+                @for (chip of getPillarHighlights(idx); track chip) {
+                  <span class="pillar-chip">
+                    <i class="fa-solid fa-check"></i> {{ chip }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Card Action Footer -->
+            <div class="pillar-footer">
+              <a [routerLink]="pillar.linkUrl" class="pillar-action-link">
                 <span>{{ pillar.linkText }}</span>
-                <i class="fa-solid fa-arrow-right"></i>
+                <div class="action-arrow-circle">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </div>
               </a>
             </div>
           </div>
