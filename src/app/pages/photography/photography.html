@@ -1,0 +1,80 @@
+<div class="photography-page-view">
+
+  <!-- =========================================================================
+       PAGE HERO BANNER
+       ========================================================================= -->
+  <section class="page-hero-banner">
+    <div class="container">
+      <div class="page-hero-content">
+        <span class="apple-badge">
+          <i class="fa-solid fa-camera-retro"></i>
+          <span>Visual Chronicles</span>
+        </span>
+        <h1 class="page-title"><span class="gradient-text-aurora">Moments & Milestones</span></h1>
+        <p class="page-lead">
+          A visual journey capturing keynote addresses, dignitary felicitations, nationwide youth mentoring summits, and global travel chronicles.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       GALLERY FILTER & MASONRY GRID
+       ========================================================================= -->
+  <section class="gallery-main-section">
+    <div class="container">
+      
+      <!-- Category Filter Pills -->
+      <div class="gallery-filter-bar">
+        @for (cat of categories; track cat) {
+          <button 
+            type="button" 
+            class="filter-pill" 
+            [class.active]="selectedCategory() === cat"
+            (click)="setCategory(cat)">
+            {{ cat }}
+          </button>
+        }
+      </div>
+
+      <!-- Masonry Photo Grid -->
+      <div class="photo-masonry-grid">
+        @for (photo of filteredPhotos; track photo.id; let idx = $index) {
+          <div 
+            class="photo-card glass-card" 
+            [class.card-tall]="idx % 3 === 0"
+            (click)="openLightbox(photo)">
+            
+            <div class="photo-img-wrap">
+              <img [src]="photo.imageUrl" [alt]="photo.title" class="photo-thumbnail">
+              <div class="photo-overlay">
+                <div class="photo-overlay-inner">
+                  <span class="photo-cat-pill">{{ photo.category }}</span>
+                  <h3 class="photo-title">{{ photo.title }}</h3>
+                  <p class="photo-caption">{{ photo.caption }}</p>
+                  
+                  <div class="photo-meta-row">
+                    @if (photo.location) {
+                      <span><i class="fa-solid fa-location-dot"></i> {{ photo.location }}</span>
+                    }
+                    @if (photo.year) {
+                      <span><i class="fa-regular fa-calendar"></i> {{ photo.year }}</span>
+                    }
+                    <span class="zoom-icon"><i class="fa-solid fa-expand"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Lightbox Viewer Modal -->
+  <app-lightbox-modal [photo]="activePhoto()" (close)="closeLightbox()"></app-lightbox-modal>
+
+</div>

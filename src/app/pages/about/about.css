@@ -1,0 +1,451 @@
+.about-page-view {
+  position: relative;
+}
+
+/* Page Hero Banner */
+.page-hero-banner {
+  padding-top: 150px;
+  padding-bottom: 60px;
+  text-align: center;
+  position: relative;
+  background: radial-gradient(circle at 50% 30%, rgba(144, 224, 239, 0.4) 0%, rgba(202, 240, 248, 0.2) 50%, transparent 70%);
+}
+
+.page-hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.page-lead {
+  font-size: 1.15rem;
+  color: var(--text-dim);
+}
+
+/* Bio Main Section */
+.bio-main-section {
+  padding: 40px 0 80px;
+}
+
+.bio-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* Left Sticky Portrait Card */
+.bio-portrait-col {
+  position: sticky;
+  top: 100px;
+}
+
+.bio-portrait-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: var(--radius-xl);
+}
+
+.portrait-box {
+  width: 100%;
+  height: 380px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(0, 75, 120, 0.15);
+}
+
+.bio-profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.bio-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bio-card-meta h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.bio-card-role {
+  font-size: 0.84rem;
+  color: var(--c-blue-ocean);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.bio-quick-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(0, 119, 182, 0.12);
+  border-bottom: 1px solid rgba(0, 119, 182, 0.12);
+}
+
+.fact-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.f-label {
+  color: var(--text-dim);
+}
+
+.f-val {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Right Narrative */
+.bio-narrative-col {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.narrative-card {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: var(--radius-xl);
+}
+
+.narrative-card h2 {
+  font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+  color: var(--text-primary);
+}
+
+.bio-paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bio-p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-body);
+}
+
+.apple-quote-box {
+  position: relative;
+  margin-top: 16px;
+  padding: 28px 32px 28px 48px;
+  border-radius: var(--radius-lg);
+  background: rgba(202, 240, 248, 0.65);
+  border-left: 4px solid var(--c-blue-ocean);
+  box-shadow: 0 10px 30px rgba(0, 75, 120, 0.08);
+}
+
+.quote-icon {
+  position: absolute;
+  top: 20px;
+  left: 18px;
+  color: rgba(0, 119, 182, 0.4);
+  font-size: 1.4rem;
+}
+
+.quote-text {
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.quote-author {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--c-blue-ocean);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Credentials Card */
+.credentials-card {
+  padding: 40px;
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.edu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.edu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  background: rgba(240, 247, 252, 0.9);
+  border: 1px solid rgba(0, 119, 182, 0.12);
+  transition: all var(--transition-fast);
+}
+
+.edu-item:hover {
+  background: #ffffff;
+  border-color: rgba(0, 180, 216, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 75, 120, 0.08);
+  transform: translateX(4px);
+}
+
+.edu-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--grad-btn-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.edu-info h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.edu-inst {
+  font-size: 0.88rem;
+  color: var(--c-blue-ocean);
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.edu-desc {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* World Records Card */
+.world-records-card {
+  padding: 40px;
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(254, 243, 199, 0.5));
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  box-shadow: 0 16px 40px rgba(0, 75, 120, 0.1), 0 0 30px rgba(245, 158, 11, 0.15);
+}
+
+.records-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.record-badge-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  background: rgba(254, 243, 199, 0.9);
+  border: 1px solid rgba(217, 119, 6, 0.6);
+  color: #b45309;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.records-intro {
+  font-size: 1.05rem;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+.records-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.record-item {
+  padding: 20px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rec-icon-wrap {
+  color: #d97706;
+  font-size: 1.4rem;
+}
+
+.rec-year {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-blue-ocean);
+  text-transform: uppercase;
+}
+
+.record-item h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.record-item p {
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+
+/* Awards Timeline Section */
+.awards-timeline-section {
+  padding: 80px 0 100px;
+}
+
+.timeline-container {
+  max-width: 860px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 24px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--c-cyan-pacific), var(--c-blue-ocean), transparent);
+}
+
+.timeline-item {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  position: relative;
+}
+
+.timeline-dot {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--grad-btn-primary);
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 16px rgba(0, 180, 216, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1rem;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.timeline-card {
+  flex: 1;
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.t-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.t-year {
+  padding: 3px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(202, 240, 248, 0.8);
+  color: var(--c-blue-ocean);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.t-conferred {
+  font-size: 0.85rem;
+  color: var(--c-blue-ocean);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.t-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.t-desc {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .bio-grid {
+    grid-template-columns: 1fr;
+  }
+  .bio-portrait-col {
+    position: static;
+  }
+  .portrait-box {
+    height: 320px;
+  }
+  .records-grid {
+    grid-template-columns: 1fr;
+  }
+  .timeline-container::before {
+    left: 20px;
+  }
+  .timeline-dot {
+    width: 40px;
+    height: 40px;
+  }
+}
+

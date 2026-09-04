@@ -1,0 +1,143 @@
+<header class="apple-navbar" [class.scrolled]="isScrolled()">
+  <div class="navbar-container">
+    
+    <!-- Brand Logo / Identity -->
+    <a routerLink="/" class="brand-identity" (click)="closeMobileMenu()">
+      <div class="brand-crest">
+        <span class="crest-monogram">VR</span>
+        <div class="crest-glow"></div>
+      </div>
+      <div class="brand-text-block">
+        <span class="brand-name">Dr. Chikkala Venugopal Rao</span>
+        <span class="brand-subtitle">HR Leader • Author • Speaker</span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="desktop-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li>
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+            Home
+          </a>
+        </li>
+        <li>
+          <a routerLink="/about-me" routerLinkActive="active" class="nav-item">
+            About Me
+          </a>
+        </li>
+        <li>
+          <a routerLink="/services" routerLinkActive="active" class="nav-item">
+            Services
+          </a>
+        </li>
+        <li>
+          <a routerLink="/my-books" routerLinkActive="active" class="nav-item">
+            My Books
+          </a>
+        </li>
+        <li>
+          <a routerLink="/photography" routerLinkActive="active" class="nav-item">
+            Photography
+          </a>
+        </li>
+        <li>
+          <a routerLink="/contact" routerLinkActive="active" class="nav-item">
+            Contact
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Header Actions (CTA Button) -->
+    <div class="header-actions">
+      <a routerLink="/contact" class="btn-header-cta">
+        <span>Invite Speaker</span>
+        <i class="fa-solid fa-arrow-right-long"></i>
+      </a>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button 
+        class="mobile-toggle-btn" 
+        (click)="toggleMobileMenu()" 
+        [attr.aria-expanded]="mobileMenuOpen()"
+        aria-label="Toggle Navigation Menu">
+        <span class="bar bar-1" [class.open]="mobileMenuOpen()"></span>
+        <span class="bar bar-2" [class.open]="mobileMenuOpen()"></span>
+        <span class="bar bar-3" [class.open]="mobileMenuOpen()"></span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Mobile Offcanvas Drawer -->
+  <div class="mobile-drawer-backdrop" [class.open]="mobileMenuOpen()" (click)="closeMobileMenu()"></div>
+  <div class="mobile-drawer" [class.open]="mobileMenuOpen()">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <div class="brand-crest mini">
+          <span class="crest-monogram">VR</span>
+        </div>
+        <span class="drawer-name">Dr. Venugopal Rao</span>
+      </div>
+      <button class="drawer-close-btn" (click)="closeMobileMenu()" aria-label="Close menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <nav class="drawer-nav">
+      <ul class="drawer-links">
+        <li>
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/about-me" routerLinkActive="active" (click)="closeMobileMenu()">
+            <i class="fa-solid fa-user-tie"></i>
+            <span>About Me</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/services" routerLinkActive="active" (click)="closeMobileMenu()">
+            <i class="fa-solid fa-briefcase"></i>
+            <span>Services & Advisory</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/my-books" routerLinkActive="active" (click)="closeMobileMenu()">
+            <i class="fa-solid fa-book"></i>
+            <span>My Books (9 Titles)</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/photography" routerLinkActive="active" (click)="closeMobileMenu()">
+            <i class="fa-solid fa-camera-retro"></i>
+            <span>Photography & Gallery</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/contact" routerLinkActive="active" (click)="closeMobileMenu()">
+            <i class="fa-solid fa-envelope"></i>
+            <span>Contact & Keynotes</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="drawer-footer">
+      <a routerLink="/contact" (click)="closeMobileMenu()" class="btn btn-primary btn-drawer-cta">
+        <span>Book Keynote Seminar</span>
+        <i class="fa-solid fa-calendar-check"></i>
+      </a>
+      <div class="drawer-socials">
+        <a [href]="settings().socials.facebook" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a [href]="settings().socials.twitter" target="_blank" rel="noopener" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        <a [href]="settings().socials.youtube" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a [href]="settings().socials.instagram" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a [href]="settings().socials.whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </div>
+</header>

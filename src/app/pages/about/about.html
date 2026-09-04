@@ -1,0 +1,191 @@
+<div class="about-page-view">
+
+  <!-- =========================================================================
+       PAGE HERO BANNER
+       ========================================================================= -->
+  <section class="page-hero-banner">
+    <div class="container">
+      <div class="page-hero-content">
+        <span class="apple-badge">
+          <i class="fa-solid fa-user-tie"></i>
+          <span>Executive Biography</span>
+        </span>
+        <h1 class="page-title"><span class="gradient-text-aurora">Meet Dr. Chikkala Venugopal Rao</span></h1>
+        <p class="page-lead">
+          Human Resources Leader • Entrepreneur • Bestselling Author • 3x World Record Holder
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       BIOGRAPHY & PROFILE SECTION
+       ========================================================================= -->
+  <section class="bio-main-section">
+    <div class="container">
+      
+      <div class="bio-grid">
+        
+        <!-- Left Sticky Portrait Card -->
+        <div class="bio-portrait-col">
+          <div class="glass-card bio-portrait-card">
+            <div class="portrait-box">
+              <img [src]="profile().profileImage" [alt]="profile().name" class="bio-profile-img">
+            </div>
+            
+            <div class="bio-card-meta">
+              <h3>{{ profile().name }}</h3>
+              <p class="bio-card-role">{{ profile().title }}</p>
+              
+              <div class="bio-quick-facts">
+                <div class="fact-row">
+                  <span class="f-label">Experience</span>
+                  <span class="f-val">16+ Years</span>
+                </div>
+                <div class="fact-row">
+                  <span class="f-label">Organization</span>
+                  <span class="f-val">{{ profile().organization }}</span>
+                </div>
+                <div class="fact-row">
+                  <span class="f-label">Doctorates</span>
+                  <span class="f-val">Ph.D + 3 Honorary</span>
+                </div>
+                <div class="fact-row">
+                  <span class="f-label">World Records</span>
+                  <span class="f-val">London, USA, Telugu</span>
+                </div>
+              </div>
+
+              <a routerLink="/contact" class="btn btn-primary btn-block">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Invite as Keynote Speaker</span>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Detailed Narrative -->
+        <div class="bio-narrative-col">
+          
+          <div class="glass-card narrative-card">
+            <span class="section-tag">The Journey</span>
+            <h2>A Lifetime Dedicated to Human Capital & Youth Empowerment</h2>
+
+            <div class="bio-paragraphs">
+              @for (p of profile().bioParagraphs; track $index) {
+                <p class="bio-p">{{ p }}</p>
+              }
+            </div>
+
+            <!-- Quote Box -->
+            <div class="apple-quote-box">
+              <i class="fa-solid fa-quote-left quote-icon"></i>
+              <p class="quote-text">
+                "Leadership is not about commanding authority; it is about cultivating an environment where talent finds purpose, resilience, and the courage to make something different."
+              </p>
+              <span class="quote-author">— Dr. Chikkala Venugopal Rao</span>
+            </div>
+
+          </div>
+
+          <!-- Academic Pedigree & Qualifications -->
+          <div class="glass-card credentials-card">
+            <span class="section-tag">Academic Excellence</span>
+            <h3>Education & Credentials</h3>
+
+            <div class="edu-list">
+              @for (edu of profile().education; track edu.degree) {
+                <div class="edu-item">
+                  <div class="edu-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                  </div>
+                  <div class="edu-info">
+                    <h4>{{ edu.degree }}</h4>
+                    <span class="edu-inst">{{ edu.institution }}</span>
+                    <p class="edu-desc">{{ edu.description }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- World Records Spotlight -->
+          <div class="glass-card world-records-card">
+            <div class="records-header">
+              <div class="records-title-group">
+                <span class="section-tag">Global Feats</span>
+                <h3>3x World Record Achievements</h3>
+              </div>
+              <div class="record-badge-gold">
+                <i class="fa-solid fa-trophy"></i>
+                <span>3 World Records</span>
+              </div>
+            </div>
+
+            <p class="records-intro">
+              Honored for monumental grassroots impact, mentoring over 27,000+ students and young professionals across India within three years.
+            </p>
+
+            <div class="records-grid">
+              @for (rec of profile().worldRecords; track rec.recordBook) {
+                <div class="record-item">
+                  <div class="rec-icon-wrap">
+                    <i class="fa-solid fa-medal"></i>
+                  </div>
+                  <div class="rec-content">
+                    <span class="rec-year">{{ rec.year }}</span>
+                    <h4>{{ rec.recordBook }}</h4>
+                    <p>{{ rec.achievement }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       COMPLETE HONORS & AWARDS TIMELINE
+       ========================================================================= -->
+  <section class="awards-timeline-section">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-tag">Accolades & Recognition</span>
+        <h2><span class="gradient-text">Prestigious Awards & VIP Honors</span></h2>
+        <p>A distinguished track record recognized by the highest constitutional dignitaries of India.</p>
+      </div>
+
+      <div class="timeline-container">
+        @for (award of awards(); track award.id; let idx = $index) {
+          <div class="timeline-item" [class.timeline-even]="idx % 2 === 1">
+            
+            <div class="timeline-dot">
+              <i class="fa-solid fa-star"></i>
+            </div>
+
+            <div class="glass-card timeline-card">
+              <div class="t-card-header">
+                <span class="t-year">{{ award.year }}</span>
+                <span class="t-conferred"><i class="fa-solid fa-building-columns"></i> {{ award.conferredBy }}</span>
+              </div>
+              <h3 class="t-title">{{ award.title }}</h3>
+              <p class="t-desc">{{ award.description }}</p>
+            </div>
+
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+</div>

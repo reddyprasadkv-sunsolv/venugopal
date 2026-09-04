@@ -1,0 +1,143 @@
+<div class="books-page-view">
+
+  <!-- =========================================================================
+       PAGE HERO BANNER
+       ========================================================================= -->
+  <section class="page-hero-banner">
+    <div class="container">
+      <div class="page-hero-content">
+        <span class="apple-badge">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Published Literary Works</span>
+        </span>
+        <h1 class="page-title"><span class="gradient-text-aurora">Author, Scholar & Researcher</span></h1>
+        <p class="page-lead">
+          Explore Dr. Chikkala Venugopal Rao's 9 published books covering modern management paradigms, job interview mastery, youth career transitions, and mindfulness.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       VIP UNVEILING SPOTLIGHT BANNER
+       ========================================================================= -->
+  <section class="vip-spotlight-section">
+    <div class="container">
+      <div class="glass-card vip-feature-banner">
+        <div class="vip-icon-box">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <div class="vip-text-content">
+          <span class="vip-tag">National Distinction</span>
+          <h3>Ceremonial Launch by Hon'ble Former Vice President of India</h3>
+          <p>
+            Three of Dr. Venugopal Rao's cornerstone publications — <em>Beyond Bossing</em>, <em>Campus to Corporate Connect</em>, and <em>Coaching and Mentoring in Leadership Development</em> — were officially unveiled by <strong>Shri M. Venkaiah Naidu Garu</strong>, Hon'ble Former Vice President of India.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       BOOKS SEARCH & FILTER SUITE
+       ========================================================================= -->
+  <section class="books-main-section">
+    <div class="container">
+      
+      <div class="books-toolbar">
+        
+        <!-- Category Filter Pills -->
+        <div class="category-pills">
+          @for (cat of categories; track cat) {
+            <button 
+              type="button" 
+              class="cat-btn" 
+              [class.active]="selectedCategory() === cat"
+              (click)="setCategory(cat)">
+              {{ cat }}
+            </button>
+          }
+        </div>
+
+        <!-- Search Input -->
+        <div class="search-input-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input 
+            type="text" 
+            placeholder="Search by title or topic..." 
+            [value]="searchQuery()" 
+            (input)="onSearchChange($event)"
+            class="search-field"
+            aria-label="Search Books">
+        </div>
+
+      </div>
+
+      <!-- Books Grid -->
+      @if (filteredBooks.length === 0) {
+        <div class="no-books-found glass-card">
+          <i class="fa-solid fa-book-bookmark"></i>
+          <h3>No titles found matching your search</h3>
+          <p>Try selecting "All" or clearing the search query.</p>
+          <button class="btn btn-secondary" (click)="setCategory('All'); searchQuery.set('')">Reset Filter</button>
+        </div>
+      } @else {
+        <div class="books-catalog-grid">
+          @for (book of filteredBooks; track book.id) {
+            <div class="glass-card book-item-card" (click)="openBook(book)">
+              
+              <div class="book-cover-wrap">
+                <img [src]="book.coverImage" [alt]="book.title" class="book-img">
+                
+                <div class="cover-quick-actions">
+                  <span class="btn btn-sm btn-primary">
+                    <i class="fa-solid fa-eye"></i> View Details
+                  </span>
+                </div>
+
+                @if (book.isUnveiledByVIP) {
+                  <span class="vip-ribbon" title="VIP Unveiled">
+                    <i class="fa-solid fa-star"></i> VIP Unveiled
+                  </span>
+                }
+              </div>
+
+              <div class="book-details">
+                <div class="cat-meta-row">
+                  <span class="book-cat">{{ book.category }}</span>
+                  @if (book.pages) {
+                    <span class="book-pages">{{ book.pages }} Pages</span>
+                  }
+                </div>
+
+                <h3 class="book-heading">{{ book.title }}</h3>
+                <p class="book-subheading">{{ book.subtitle }}</p>
+                <p class="book-snippet">{{ book.description }}</p>
+
+                <div class="book-card-actions">
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="$event.stopPropagation(); openBook(book)">
+                    <span>Read Synopsis</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                  <a [href]="book.amazonUrl" target="_blank" rel="noopener" class="btn-amazon-pill" (click)="$event.stopPropagation()">
+                    <i class="fa-brands fa-amazon"></i>
+                    <span>Buy</span>
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+          }
+        </div>
+      }
+
+    </div>
+  </section>
+
+  <!-- Detail Modal -->
+  <app-book-modal [book]="selectedBook()" (close)="closeBook()"></app-book-modal>
+
+</div>

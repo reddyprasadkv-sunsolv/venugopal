@@ -1,0 +1,31 @@
+@if (photo(); as p) {
+  <div class="lightbox-backdrop" (click)="onClose()">
+    <button class="lightbox-close" (click)="onClose()" aria-label="Close Lightbox">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div class="lightbox-frame glass-card" (click)="$event.stopPropagation()">
+      <div class="lightbox-image-wrap">
+        <img [src]="p.imageUrl" [alt]="p.title" class="lightbox-img">
+      </div>
+      
+      <div class="lightbox-caption-bar">
+        <div class="caption-left">
+          <span class="lightbox-cat-badge">{{ p.category }}</span>
+          <h3 class="lightbox-title">{{ p.title }}</h3>
+          <p class="lightbox-caption-text">{{ p.caption }}</p>
+        </div>
+        @if (p.location || p.year) {
+          <div class="caption-meta">
+            @if (p.location) {
+              <span><i class="fa-solid fa-location-dot"></i> {{ p.location }}</span>
+            }
+            @if (p.year) {
+              <span><i class="fa-regular fa-calendar"></i> {{ p.year }}</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

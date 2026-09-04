@@ -1,0 +1,1162 @@
+<div class="admin-page-root">
+
+  <!-- Floating Toast Notification -->
+  @if (toastMessage()) {
+    <div class="admin-toast" [class.toast-error]="toastType() === 'error'" [class.toast-info]="toastType() === 'info'">
+      <i class="fa-solid" [class.fa-circle-check]="toastType() === 'success'" [class.fa-circle-exclamation]="toastType() === 'error'" [class.fa-circle-info]="toastType() === 'info'"></i>
+      <span>{{ toastMessage() }}</span>
+    </div>
+  }
+
+  <!-- =========================================================================
+       1. AUTHENTICATION LOCK SCREEN (IF NOT LOGGED IN)
+       ========================================================================= -->
+  @if (!isAuthenticated()) {
+    <div class="admin-lock-screen">
+      <div class="lock-card glass-card">
+        <div class="lock-icon-wrap">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        
+        <h2>CRM & Studio Manager</h2>
+        <p class="lock-sub">Enter your security PIN to access the Dr. Venugopal Rao content & leads portal.</p>
+
+        @if (authError()) {
+          <div class="auth-error-banner">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>{{ authError() }}</span>
+          </div>
+        }
+
+        <form class="pin-form" (submit)="$event.preventDefault(); login()">
+          <div class="pin-field-wrap">
+            <input 
+              type="password" 
+              [ngModel]="pinInput()" 
+              (ngModelChange)="pinInput.set($event)" 
+              name="pinInput"
+              placeholder="Enter PIN (Default: 1234)" 
+              maxlength="10" 
+              autofocus 
+              class="pin-input">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-unlock">
+            <i class="fa-solid fa-key"></i>
+            <span>Unlock CRM Studio</span>
+          </button>
+        </form>
+
+        <div class="lock-footer-info">
+          <span>Protected Administrative Interface</span>
+          <a routerLink="/" class="back-home-link"><i class="fa-solid fa-arrow-left"></i> Return to Public Site</a>
+        </div>
+      </div>
+    </div>
+  } @else {
+
+    <!-- =========================================================================
+         2. ADMIN DASHBOARD & CRM STUDIO WORKSPACE
+         ========================================================================= -->
+    <div class="admin-workspace">
+      
+      <!-- Studio Sidebar -->
+      <aside class="admin-sidebar glass-card">
+        <div class="sidebar-brand">
+          <div class="brand-crest mini">
+            <span class="crest-monogram">VR</span>
+          </div>
+          <div class="sidebar-brand-text">
+            <strong>CRM Studio</strong>
+            <span>Admin Console</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
+            [class.active]="currentTab() === 'overview'" 
+            (click)="setTab('overview')">
+            <i class="fa-solid fa-gauge"></i>
+            <span>Overview</span>
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
+            [class.active]="currentTab() === 'hero'" 
+            (click)="setTab('hero')">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Hero & Profile</span>
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
+            [class.active]="currentTab() === 'services'" 
+            (click)="setTab('services')">
+            <i class="fa-solid fa-briefcase"></i>
+            <span>Services ({{ services().length }})</span>
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
+            [class.active]="currentTab() === 'books'" 
+            (click)="setTab('books')">
+            <i class="fa-solid fa-book"></i>
+            <span>Books ({{ books().length }})</span>
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
+            [class.active]="currentTab() === 'awards'" 
+            (click)="setTab('awards')">
+            <i class="fa-solid fa-trophy"></i>
+            <span>Awards ({{ awards().length }})</span>
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
+            [class.active]="currentTab() === 'gallery'" 
+            (click)="setTab('gallery')">
+            <i class="fa-solid fa-images"></i>
+            <span>Gallery ({{ gallery().length }})</span>
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn tab-leads" 
+            [class.active]="currentTab() === 'leads'" 
+            (click)="setTab('leads')">
+            <i class="fa-solid fa-inbox"></i>
+            <span>Leads CRM</span>
+            @if (leads().length > 0) {
+              <span class="leads-counter-pill">{{ leads().length }}</span>
+            }
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
+            [class.active]="currentTab() === 'settings'" 
+            (click)="setTab('settings')">
+            <i class="fa-solid fa-gear"></i>
+            <span>Settings & Backup</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a routerLink="/" target="_blank" class="sidebar-action-btn" title="View Public Live Site">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            <span>Live Site</span>
+          </a>
+          <button type="button" class="sidebar-action-btn logout-btn" (click)="logout()" title="Lock CRM Studio">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Lock</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content Canvas -->
+      <main class="admin-main-canvas">
+        
+        <!-- Top Toolbar Header -->
+        <header class="admin-top-bar glass-card">
+          <div class="top-bar-left">
+            <h2 class="active-tab-title">
+              @switch (currentTab()) {
+                @case ('overview') { <span><i class="fa-solid fa-gauge"></i> Executive Dashboard Overview</span> }
+                @case ('hero') { <span><i class="fa-solid fa-wand-magic-sparkles"></i> Hero, Bio & Metrics Manager</span> }
+                @case ('services') { <span><i class="fa-solid fa-briefcase"></i> Consulting & Services Manager</span> }
+                @case ('books') { <span><i class="fa-solid fa-book"></i> Book Library & VIP Launches</span> }
+                @case ('awards') { <span><i class="fa-solid fa-trophy"></i> Honors & Awards Timeline</span> }
+                @case ('gallery') { <span><i class="fa-solid fa-images"></i> Photography & Media Manager</span> }
+                @case ('leads') { <span><i class="fa-solid fa-inbox"></i> Speaker Inquiries & Client CRM</span> }
+                @case ('settings') { <span><i class="fa-solid fa-gear"></i> System Settings & JSON Backup</span> }
+              }
+            </h2>
+          </div>
+
+          <div class="top-bar-right">
+            <span class="live-sync-indicator">
+              <span class="pulse-dot"></span>
+              <span>Live Reactive Sync Active</span>
+            </span>
+            <a routerLink="/" target="_blank" class="btn btn-sm btn-secondary">
+              <i class="fa-solid fa-globe"></i>
+              <span>Preview Site</span>
+            </a>
+          </div>
+        </header>
+
+        <!-- Dynamic Tab Panel -->
+        <div class="admin-content-body">
+
+          <!-- ===============================================================
+               TAB 1: OVERVIEW DASHBOARD
+               =============================================================== -->
+          @if (currentTab() === 'overview') {
+            <div class="dashboard-overview-tab">
+              
+              <!-- Top Stat Cards -->
+              <div class="overview-stats-grid">
+                
+                <div class="glass-card stat-metric-box" (click)="setTab('leads')">
+                  <div class="stat-icon-wrap leads-icon"><i class="fa-solid fa-inbox"></i></div>
+                  <div class="stat-info">
+                    <span class="stat-number">{{ leads().length }}</span>
+                    <span class="stat-title">Inquiries & Leads</span>
+                  </div>
+                  <i class="fa-solid fa-arrow-right jump-arrow"></i>
+                </div>
+
+                <div class="glass-card stat-metric-box" (click)="setTab('books')">
+                  <div class="stat-icon-wrap books-icon"><i class="fa-solid fa-book"></i></div>
+                  <div class="stat-info">
+                    <span class="stat-number">{{ books().length }}</span>
+                    <span class="stat-title">Published Books</span>
+                  </div>
+                  <i class="fa-solid fa-arrow-right jump-arrow"></i>
+                </div>
+
+                <div class="glass-card stat-metric-box" (click)="setTab('services')">
+                  <div class="stat-icon-wrap services-icon"><i class="fa-solid fa-briefcase"></i></div>
+                  <div class="stat-info">
+                    <span class="stat-number">{{ services().length }}</span>
+                    <span class="stat-title">Consulting Services</span>
+                  </div>
+                  <i class="fa-solid fa-arrow-right jump-arrow"></i>
+                </div>
+
+                <div class="glass-card stat-metric-box" (click)="setTab('awards')">
+                  <div class="stat-icon-wrap awards-icon"><i class="fa-solid fa-trophy"></i></div>
+                  <div class="stat-info">
+                    <span class="stat-number">{{ awards().length }}</span>
+                    <span class="stat-title">Honors & Awards</span>
+                  </div>
+                  <i class="fa-solid fa-arrow-right jump-arrow"></i>
+                </div>
+
+              </div>
+
+              <!-- Quick Actions & Recent Leads -->
+              <div class="overview-two-col">
+                
+                <!-- Recent Leads Box -->
+                <div class="glass-card overview-card-box">
+                  <div class="card-box-header">
+                    <h3>Recent Keynote & Consulting Inquiries</h3>
+                    <button class="btn btn-sm btn-secondary" (click)="setTab('leads')">View All Leads</button>
+                  </div>
+
+                  @if (leads().length === 0) {
+                    <div class="empty-leads-note">
+                      <p>No new inquiries logged yet. Submissions through the Contact form will appear here.</p>
+                    </div>
+                  } @else {
+                    <div class="leads-mini-table">
+                      @for (lead of leads().slice(0, 4); track lead.id) {
+                        <div class="lead-mini-row">
+                          <div class="lead-main-info">
+                            <strong>{{ lead.name }}</strong>
+                            <span>{{ lead.inquiryType }} • {{ lead.organization || 'Individual' }}</span>
+                          </div>
+                          <span class="status-pill" [class.status-new]="lead.status === 'New'" [class.status-progress]="lead.status === 'In Progress'">
+                            {{ lead.status }}
+                          </span>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <!-- Quick Section Controls -->
+                <div class="glass-card overview-card-box">
+                  <div class="card-box-header">
+                    <h3>Quick Management Hub</h3>
+                  </div>
+
+                  <div class="quick-hub-list">
+                    <button class="quick-hub-item" (click)="setTab('hero')">
+                      <i class="fa-solid fa-wand-magic-sparkles"></i>
+                      <div>
+                        <strong>Update Hero Headlines & Images</strong>
+                        <span>Edit page title, subcopy, and upload new banner photos</span>
+                      </div>
+                    </button>
+
+                    <button class="quick-hub-item" (click)="setTab('books')">
+                      <i class="fa-solid fa-plus-circle"></i>
+                      <div>
+                        <strong>Add New Book to Library</strong>
+                        <span>Add title, synopsis, Amazon link, and upload cover</span>
+                      </div>
+                    </button>
+
+                    <button class="quick-hub-item" (click)="setTab('services')">
+                      <i class="fa-solid fa-briefcase"></i>
+                      <div>
+                        <strong>Manage Verch Consulting Services</strong>
+                        <span>Create and update corporate advisory offerings</span>
+                      </div>
+                    </button>
+
+                    <button class="quick-hub-item" (click)="exportJson()">
+                      <i class="fa-solid fa-file-export"></i>
+                      <div>
+                        <strong>Download Site Data Backup (JSON)</strong>
+                        <span>Save a full snapshot of all current site text and images</span>
+                      </div>
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB 2: HERO, BIO & METRICS MANAGER
+               =============================================================== -->
+          @if (currentTab() === 'hero') {
+            <div class="hero-manager-tab">
+              
+              <div class="admin-panel-grid">
+                
+                <!-- Hero Section Editor -->
+                <div class="glass-card admin-form-card">
+                  <div class="card-box-header">
+                    <h3>Hero Section Content</h3>
+                    <button class="btn btn-sm btn-primary" (click)="saveHero()">Save Hero Changes</button>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Top Pill Badge Text</label>
+                    <input type="text" [(ngModel)]="heroForm().badge" class="form-input">
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Title Prefix</label>
+                      <input type="text" [(ngModel)]="heroForm().titlePrefix" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Title Highlight (Aurora Gradient)</label>
+                      <input type="text" [(ngModel)]="heroForm().titleHighlight" class="form-input">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Title Suffix</label>
+                    <input type="text" [(ngModel)]="heroForm().titleSuffix" class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Hero Subtitle Description</label>
+                    <textarea [(ngModel)]="heroForm().subtitle" rows="3" class="form-textarea"></textarea>
+                  </div>
+
+                  <!-- Hero Image Editor -->
+                  <div class="form-group image-upload-group">
+                    <label class="img-label">
+                      <span>Hero / Author Spotlight Image</span>
+                      <span class="dimension-badge"><i class="fa-solid fa-ruler-combined"></i> 800 × 1000 px (4:5 Portrait)</span>
+                    </label>
+                    <p class="img-dimension-hint">Recommended dimensions: <strong>800px width × 1000px height</strong> (min. 600 × 750px, JPG/PNG/WebP).</p>
+                    <div class="img-preview-row">
+                      <img [src]="heroForm().heroImage" alt="Hero Preview" class="admin-img-thumb">
+                      <div class="img-ctrls">
+                        <input type="text" [(ngModel)]="heroForm().heroImage" placeholder="Image URL (e.g. images/author/...)" class="form-input">
+                        <label class="btn btn-sm btn-secondary file-upload-btn">
+                          <i class="fa-solid fa-upload"></i> Upload Image File
+                          <input type="file" accept="image/*" (change)="handleImageUpload($event, heroForm().heroImage = $any($event))" style="display: none;">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Executive Bio & Profile Editor -->
+                <div class="glass-card admin-form-card">
+                  <div class="card-box-header">
+                    <h3>Executive Bio & Credentials</h3>
+                    <button class="btn btn-sm btn-primary" (click)="saveProfile()">Save Bio Changes</button>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Full Author Name</label>
+                    <input type="text" [(ngModel)]="profileForm().name" class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Professional Title Line</label>
+                    <input type="text" [(ngModel)]="profileForm().title" class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Philosophy Tagline</label>
+                    <input type="text" [(ngModel)]="profileForm().tagline" class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Biography Paragraph 1</label>
+                    <textarea [(ngModel)]="profileForm().bioParagraphs[0]" rows="3" class="form-textarea"></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Biography Paragraph 2</label>
+                    <textarea [(ngModel)]="profileForm().bioParagraphs[1]" rows="3" class="form-textarea"></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Biography Paragraph 3</label>
+                    <textarea [(ngModel)]="profileForm().bioParagraphs[2]" rows="3" class="form-textarea"></textarea>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Stats Metrics Counters Editor -->
+              <div class="glass-card admin-form-card stats-manager-box">
+                <div class="card-box-header">
+                  <h3>Metrics & Statistics Counters</h3>
+                  <button class="btn btn-sm btn-primary" (click)="saveStats()">Save Metrics</button>
+                </div>
+
+                <div class="stats-edit-grid">
+                  @for (st of statsForm(); track st.id; let idx = $index) {
+                    <div class="stat-edit-card">
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label>Number Value</label>
+                          <input type="number" [(ngModel)]="st.value" class="form-input">
+                        </div>
+                        <div class="form-group">
+                          <label>Suffix (+, %, etc.)</label>
+                          <input type="text" [(ngModel)]="st.suffix" class="form-input">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>Label</label>
+                        <input type="text" [(ngModel)]="st.label" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" [(ngModel)]="st.description" class="form-input">
+                      </div>
+                    </div>
+                  }
+                </div>
+
+              </div>
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB 3: SERVICES MANAGER
+               =============================================================== -->
+          @if (currentTab() === 'services') {
+            <div class="services-manager-tab">
+              
+              <div class="tab-action-bar">
+                <h3>Consulting & Training Offerings ({{ services().length }})</h3>
+                <button class="btn btn-primary" (click)="startAddService()">
+                  <i class="fa-solid fa-plus"></i> Add New Service
+                </button>
+              </div>
+
+              <!-- Add/Edit Service Modal/Form -->
+              @if (isAddingService() || editingService()) {
+                <div class="glass-card admin-form-card modal-edit-box">
+                  <div class="card-box-header">
+                    <h4>{{ isAddingService() ? 'Create New Service' : 'Edit Service: ' + editingService()?.title }}</h4>
+                    <button class="btn btn-sm btn-secondary" (click)="isAddingService.set(false); editingService.set(null)">Cancel</button>
+                  </div>
+
+                  @if (isAddingService()) {
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Service Title</label>
+                        <input type="text" [(ngModel)]="newServiceForm().title" class="form-input" placeholder="e.g. Strategic HR Advisory">
+                      </div>
+                      <div class="form-group">
+                        <label>Badge / Category</label>
+                        <input type="text" [(ngModel)]="newServiceForm().badge" class="form-input" placeholder="Corporate Advisory">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Subtitle / One-liner</label>
+                      <input type="text" [(ngModel)]="newServiceForm().subtitle" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Target Audience</label>
+                      <input type="text" [(ngModel)]="newServiceForm().targetAudience" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Full Description</label>
+                      <textarea [(ngModel)]="newServiceForm().description" rows="3" class="form-textarea"></textarea>
+                    </div>
+                    <button class="btn btn-primary" (click)="saveNewService()">Create Service</button>
+                  } @else if (editingService(); as svc) {
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Service Title</label>
+                        <input type="text" [(ngModel)]="svc.title" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Badge / Category</label>
+                        <input type="text" [(ngModel)]="svc.badge" class="form-input">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Subtitle / One-liner</label>
+                      <input type="text" [(ngModel)]="svc.subtitle" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Target Audience</label>
+                      <input type="text" [(ngModel)]="svc.targetAudience" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Full Description</label>
+                      <textarea [(ngModel)]="svc.description" rows="3" class="form-textarea"></textarea>
+                    </div>
+                    <button class="btn btn-primary" (click)="saveEditedService()">Save Service Updates</button>
+                  }
+                </div>
+              }
+
+              <!-- Services Table / List -->
+              <div class="admin-items-grid">
+                @for (svc of services(); track svc.id) {
+                  <div class="glass-card admin-item-card">
+                    <div class="item-card-header">
+                      <span class="service-badge-pill">{{ svc.badge }}</span>
+                      <div class="item-actions">
+                        <button class="btn-icon-action" (click)="editService(svc)" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="btn-icon-action delete-act" (click)="deleteService(svc)" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                      </div>
+                    </div>
+                    <h4>{{ svc.title }}</h4>
+                    <p class="item-sub">{{ svc.subtitle }}</p>
+                    <p class="item-desc-clip">{{ svc.description }}</p>
+                  </div>
+                }
+              </div>
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB 4: BOOKS MANAGER
+               =============================================================== -->
+          @if (currentTab() === 'books') {
+            <div class="books-manager-tab">
+              
+              <div class="tab-action-bar">
+                <h3>Library Titles ({{ books().length }} Books)</h3>
+                <button class="btn btn-primary" (click)="startAddBook()">
+                  <i class="fa-solid fa-plus"></i> Add New Book
+                </button>
+              </div>
+
+              <!-- Add/Edit Book Form -->
+              @if (isAddingBook() || editingBook()) {
+                <div class="glass-card admin-form-card modal-edit-box">
+                  <div class="card-box-header">
+                    <h4>{{ isAddingBook() ? 'Add New Book' : 'Edit Book: ' + editingBook()?.title }}</h4>
+                    <button class="btn btn-sm btn-secondary" (click)="isAddingBook.set(false); editingBook.set(null)">Cancel</button>
+                  </div>
+
+                  @if (isAddingBook()) {
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Book Title</label>
+                        <input type="text" [(ngModel)]="newBookForm().title" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Category</label>
+                        <select [(ngModel)]="newBookForm().category" class="form-select">
+                          <option value="Leadership">Leadership</option>
+                          <option value="Career">Career</option>
+                          <option value="HR & Talent">HR & Talent</option>
+                          <option value="Stress Management">Stress Management</option>
+                          <option value="Spirituality">Spirituality</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Subtitle</label>
+                      <input type="text" [(ngModel)]="newBookForm().subtitle" class="form-input">
+                    </div>
+
+                    <div class="form-group image-upload-group">
+                      <label class="img-label">
+                        <span>Book Cover Image</span>
+                        <span class="dimension-badge"><i class="fa-solid fa-ruler-combined"></i> 600 × 900 px (2:3 Ratio)</span>
+                      </label>
+                      <p class="img-dimension-hint">Recommended dimensions: <strong>600px width × 900px height</strong> (min. 400 × 600px, JPG/PNG/WebP).</p>
+                      <div class="img-preview-row">
+                        <img [src]="newBookForm().coverImage" alt="Cover Preview" class="admin-book-thumb">
+                        <div class="img-ctrls">
+                          <input type="text" [(ngModel)]="newBookForm().coverImage" placeholder="Image URL (e.g. images/books/...)" class="form-input">
+                          <label class="btn btn-sm btn-secondary file-upload-btn">
+                            <i class="fa-solid fa-upload"></i> Upload Cover
+                            <input type="file" accept="image/*" (change)="handleImageUpload($event, newBookForm().coverImage = $any($event))" style="display: none;">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Amazon Purchase Link</label>
+                      <input type="text" [(ngModel)]="newBookForm().amazonUrl" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Book Description / Synopsis</label>
+                      <textarea [(ngModel)]="newBookForm().description" rows="3" class="form-textarea"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>
+                          <input type="checkbox" [(ngModel)]="newBookForm().isUnveiledByVIP">
+                          Unveiled by VIP Dignitary (Former Vice President)
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          <input type="checkbox" [(ngModel)]="newBookForm().featured">
+                          Show on Home Page Carousel
+                        </label>
+                      </div>
+                    </div>
+
+                    <button class="btn btn-primary" (click)="saveNewBook()">Add Book to Library</button>
+                  } @else if (editingBook(); as book) {
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Book Title</label>
+                        <input type="text" [(ngModel)]="book.title" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Category</label>
+                        <select [(ngModel)]="book.category" class="form-select">
+                          <option value="Leadership">Leadership</option>
+                          <option value="Career">Career</option>
+                          <option value="HR & Talent">HR & Talent</option>
+                          <option value="Stress Management">Stress Management</option>
+                          <option value="Spirituality">Spirituality</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Subtitle</label>
+                      <input type="text" [(ngModel)]="book.subtitle" class="form-input">
+                    </div>
+
+                    <div class="form-group image-upload-group">
+                      <label class="img-label">
+                        <span>Book Cover Image</span>
+                        <span class="dimension-badge"><i class="fa-solid fa-ruler-combined"></i> 600 × 900 px (2:3 Ratio)</span>
+                      </label>
+                      <p class="img-dimension-hint">Recommended dimensions: <strong>600px width × 900px height</strong> (min. 400 × 600px, JPG/PNG/WebP).</p>
+                      <div class="img-preview-row">
+                        <img [src]="book.coverImage" alt="Cover Preview" class="admin-book-thumb">
+                        <div class="img-ctrls">
+                          <input type="text" [(ngModel)]="book.coverImage" class="form-input">
+                          <label class="btn btn-sm btn-secondary file-upload-btn">
+                            <i class="fa-solid fa-upload"></i> Upload Cover
+                            <input type="file" accept="image/*" (change)="handleImageUpload($event, book.coverImage = $any($event))" style="display: none;">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Amazon Purchase Link</label>
+                      <input type="text" [(ngModel)]="book.amazonUrl" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Book Description / Synopsis</label>
+                      <textarea [(ngModel)]="book.description" rows="3" class="form-textarea"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>
+                          <input type="checkbox" [(ngModel)]="book.isUnveiledByVIP">
+                          Unveiled by VIP Dignitary
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          <input type="checkbox" [(ngModel)]="book.featured">
+                          Show on Home Page
+                        </label>
+                      </div>
+                    </div>
+
+                    <button class="btn btn-primary" (click)="saveEditedBook()">Save Book Updates</button>
+                  }
+                </div>
+              }
+
+              <!-- Books List -->
+              <div class="admin-books-list">
+                @for (book of books(); track book.id) {
+                  <div class="glass-card admin-book-item">
+                    <img [src]="book.coverImage" [alt]="book.title" class="book-row-thumb">
+                    <div class="book-row-details">
+                      <div class="book-row-top">
+                        <span class="cat-pill">{{ book.category }}</span>
+                        @if (book.isUnveiledByVIP) {
+                          <span class="vip-badge"><i class="fa-solid fa-crown"></i> VIP Launch</span>
+                        }
+                      </div>
+                      <h4>{{ book.title }}</h4>
+                      <p class="item-sub">{{ book.subtitle }}</p>
+                      <a [href]="book.amazonUrl" target="_blank" rel="noopener" class="amazon-link-preview">
+                        <i class="fa-brands fa-amazon"></i> {{ book.amazonUrl }}
+                      </a>
+                    </div>
+                    <div class="book-row-actions">
+                      <button class="btn-icon-action" (click)="editBook(book)" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                      <button class="btn-icon-action delete-act" (click)="deleteBook(book)" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </div>
+                }
+              </div>
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB 5: HONORS & AWARDS MANAGER
+               =============================================================== -->
+          @if (currentTab() === 'awards') {
+            <div class="awards-manager-tab">
+              
+              <div class="tab-action-bar">
+                <h3>Prestigious Awards & Accolades ({{ awards().length }})</h3>
+                <button class="btn btn-primary" (click)="startAddAward()">
+                  <i class="fa-solid fa-plus"></i> Add New Award
+                </button>
+              </div>
+
+              <!-- Add/Edit Award -->
+              @if (isAddingAward() || editingAward()) {
+                <div class="glass-card admin-form-card modal-edit-box">
+                  <div class="card-box-header">
+                    <h4>{{ isAddingAward() ? 'Add New Award' : 'Edit Award' }}</h4>
+                    <button class="btn btn-sm btn-secondary" (click)="isAddingAward.set(false); editingAward.set(null)">Cancel</button>
+                  </div>
+
+                  @if (isAddingAward()) {
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Award Title</label>
+                        <input type="text" [(ngModel)]="newAwardForm().title" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Year</label>
+                        <input type="text" [(ngModel)]="newAwardForm().year" class="form-input">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Conferred By (Dignitary / Organization)</label>
+                      <input type="text" [(ngModel)]="newAwardForm().conferredBy" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Description & Citation</label>
+                      <textarea [(ngModel)]="newAwardForm().description" rows="3" class="form-textarea"></textarea>
+                    </div>
+                    <button class="btn btn-primary" (click)="saveNewAward()">Save Award</button>
+                  } @else if (editingAward(); as aw) {
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Award Title</label>
+                        <input type="text" [(ngModel)]="aw.title" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Year</label>
+                        <input type="text" [(ngModel)]="aw.year" class="form-input">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Conferred By</label>
+                      <input type="text" [(ngModel)]="aw.conferredBy" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Description</label>
+                      <textarea [(ngModel)]="aw.description" rows="3" class="form-textarea"></textarea>
+                    </div>
+                    <button class="btn btn-primary" (click)="saveEditedAward()">Save Award Updates</button>
+                  }
+                </div>
+              }
+
+              <!-- Awards Grid -->
+              <div class="admin-items-grid">
+                @for (award of awards(); track award.id) {
+                  <div class="glass-card admin-item-card">
+                    <div class="item-card-header">
+                      <span class="award-year-tag">{{ award.year }}</span>
+                      <div class="item-actions">
+                        <button class="btn-icon-action" (click)="editAward(award)"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="btn-icon-action delete-act" (click)="deleteAward(award)"><i class="fa-solid fa-trash"></i></button>
+                      </div>
+                    </div>
+                    <h4>{{ award.title }}</h4>
+                    <p class="item-sub">{{ award.conferredBy }}</p>
+                    <p class="item-desc-clip">{{ award.description }}</p>
+                  </div>
+                }
+              </div>
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB 6: GALLERY MANAGER
+               =============================================================== -->
+          @if (currentTab() === 'gallery') {
+            <div class="gallery-manager-tab">
+              
+              <div class="tab-action-bar">
+                <h3>Photography & Media Assets ({{ gallery().length }})</h3>
+                <button class="btn btn-primary" (click)="startAddPhoto()">
+                  <i class="fa-solid fa-plus"></i> Add New Photo
+                </button>
+              </div>
+
+              <!-- Add/Edit Photo -->
+              @if (isAddingPhoto() || editingPhoto()) {
+                <div class="glass-card admin-form-card modal-edit-box">
+                  <div class="card-box-header">
+                    <h4>{{ isAddingPhoto() ? 'Add New Photo' : 'Edit Photo' }}</h4>
+                    <button class="btn btn-sm btn-secondary" (click)="isAddingPhoto.set(false); editingPhoto.set(null)">Cancel</button>
+                  </div>
+
+                  @if (isAddingPhoto()) {
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Photo Title</label>
+                        <input type="text" [(ngModel)]="newPhotoForm().title" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Category</label>
+                        <select [(ngModel)]="newPhotoForm().category" class="form-select">
+                          <option value="Dignitaries">Dignitaries</option>
+                          <option value="Keynotes">Keynotes</option>
+                          <option value="Mentorship">Mentorship</option>
+                          <option value="Global Travels">Global Travels</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group image-upload-group">
+                      <label class="img-label">
+                        <span>Photo / Media Image</span>
+                        <span class="dimension-badge"><i class="fa-solid fa-ruler-combined"></i> 1200 × 800 px (3:2 Ratio)</span>
+                      </label>
+                      <p class="img-dimension-hint">Recommended dimensions: <strong>1200px width × 800px height</strong> (min. 800 × 600px, JPG/PNG/WebP).</p>
+                      <div class="img-preview-row">
+                        <img [src]="newPhotoForm().imageUrl" alt="Preview" class="admin-photo-thumb">
+                        <div class="img-ctrls">
+                          <input type="text" [(ngModel)]="newPhotoForm().imageUrl" class="form-input">
+                          <label class="btn btn-sm btn-secondary file-upload-btn">
+                            <i class="fa-solid fa-upload"></i> Upload Image
+                            <input type="file" accept="image/*" (change)="handleImageUpload($event, newPhotoForm().imageUrl = $any($event))" style="display: none;">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Caption / Context</label>
+                      <textarea [(ngModel)]="newPhotoForm().caption" rows="2" class="form-textarea"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" [(ngModel)]="newPhotoForm().location" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Year</label>
+                        <input type="text" [(ngModel)]="newPhotoForm().year" class="form-input">
+                      </div>
+                    </div>
+
+                    <button class="btn btn-primary" (click)="saveNewPhoto()">Add Photo to Gallery</button>
+                  } @else if (editingPhoto(); as photo) {
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Photo Title</label>
+                        <input type="text" [(ngModel)]="photo.title" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Category</label>
+                        <select [(ngModel)]="photo.category" class="form-select">
+                          <option value="Dignitaries">Dignitaries</option>
+                          <option value="Keynotes">Keynotes</option>
+                          <option value="Mentorship">Mentorship</option>
+                          <option value="Global Travels">Global Travels</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group image-upload-group">
+                      <label class="img-label">
+                        <span>Photo / Media Image</span>
+                        <span class="dimension-badge"><i class="fa-solid fa-ruler-combined"></i> 1200 × 800 px (3:2 Ratio)</span>
+                      </label>
+                      <p class="img-dimension-hint">Recommended dimensions: <strong>1200px width × 800px height</strong> (min. 800 × 600px, JPG/PNG/WebP).</p>
+                      <div class="img-preview-row">
+                        <img [src]="photo.imageUrl" alt="Preview" class="admin-photo-thumb">
+                        <div class="img-ctrls">
+                          <input type="text" [(ngModel)]="photo.imageUrl" class="form-input">
+                          <label class="btn btn-sm btn-secondary file-upload-btn">
+                            <i class="fa-solid fa-upload"></i> Upload Image
+                            <input type="file" accept="image/*" (change)="handleImageUpload($event, photo.imageUrl = $any($event))" style="display: none;">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Caption</label>
+                      <textarea [(ngModel)]="photo.caption" rows="2" class="form-textarea"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" (click)="saveEditedPhoto()">Save Photo Updates</button>
+                  }
+                </div>
+              }
+
+              <!-- Gallery Grid -->
+              <div class="admin-gallery-grid">
+                @for (photo of gallery(); track photo.id) {
+                  <div class="glass-card admin-photo-card">
+                    <img [src]="photo.imageUrl" [alt]="photo.title" class="gallery-card-thumb">
+                    <div class="gallery-card-body">
+                      <span class="photo-cat-pill">{{ photo.category }}</span>
+                      <h4>{{ photo.title }}</h4>
+                      <p>{{ photo.caption }}</p>
+                      <div class="item-actions photo-acts">
+                        <button class="btn-icon-action" (click)="editPhoto(photo)"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="btn-icon-action delete-act" (click)="deletePhoto(photo)"><i class="fa-solid fa-trash"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB 7: LEADS & INQUIRIES CRM INBOX
+               =============================================================== -->
+          @if (currentTab() === 'leads') {
+            <div class="leads-crm-tab">
+              
+              <div class="tab-action-bar">
+                <h3>Executive Inquiries Inbox ({{ leads().length }} Leads)</h3>
+                <button class="btn btn-secondary" (click)="exportJson()">
+                  <i class="fa-solid fa-download"></i> Export All Data
+                </button>
+              </div>
+
+              @if (leads().length === 0) {
+                <div class="glass-card empty-leads-card">
+                  <i class="fa-solid fa-inbox"></i>
+                  <h3>No Leads Received Yet</h3>
+                  <p>Inquiries submitted on the public Contact page will be organized here.</p>
+                </div>
+              } @else {
+                <div class="leads-detailed-list">
+                  @for (lead of leads(); track lead.id) {
+                    <div class="glass-card lead-card-full">
+                      
+                      <div class="lead-header-row">
+                        <div class="lead-sender-meta">
+                          <h4>{{ lead.name }}</h4>
+                          <span class="lead-type-tag">{{ lead.inquiryType }}</span>
+                          @if (lead.organization) {
+                            <span class="lead-org"><i class="fa-solid fa-building"></i> {{ lead.organization }}</span>
+                          }
+                        </div>
+
+                        <!-- Status Selector -->
+                        <div class="lead-status-picker">
+                          <label>Status:</label>
+                          <select 
+                            [ngModel]="lead.status" 
+                            (ngModelChange)="updateLead(lead.id, $event, lead.notes)"
+                            class="status-select">
+                            <option value="New">New</option>
+                            <option value="Contacted">Contacted</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Archived">Archived</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="lead-contact-strip">
+                        <span><i class="fa-solid fa-envelope"></i> <a [href]="'mailto:' + lead.email">{{ lead.email }}</a></span>
+                        <span><i class="fa-solid fa-phone"></i> <a [href]="'tel:' + lead.phone">{{ lead.phone }}</a></span>
+                        @if (lead.eventDate) {
+                          <span><i class="fa-solid fa-calendar"></i> Proposed Date: <strong>{{ lead.eventDate }}</strong></span>
+                        }
+                        <span><i class="fa-solid fa-clock"></i> {{ lead.dateSubmitted | date:'medium' }}</span>
+                      </div>
+
+                      <div class="lead-message-box">
+                        <strong>Message:</strong>
+                        <p>{{ lead.message }}</p>
+                      </div>
+
+                      <div class="lead-footer-row">
+                        <div class="lead-notes-box">
+                          <input 
+                            type="text" 
+                            [ngModel]="lead.notes" 
+                            (ngModelChange)="updateLead(lead.id, lead.status, $event)"
+                            placeholder="Add private CRM notes..." 
+                            class="notes-input">
+                        </div>
+                        <button class="btn-icon-action delete-act" (click)="deleteLead(lead)" title="Delete Lead">
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
+
+                    </div>
+                  }
+                </div>
+              }
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB 8: SYSTEM SETTINGS & BACKUP
+               =============================================================== -->
+          @if (currentTab() === 'settings') {
+            <div class="settings-manager-tab">
+              
+              <div class="admin-panel-grid">
+                
+                <!-- Contact & Socials Settings -->
+                <div class="glass-card admin-form-card">
+                  <div class="card-box-header">
+                    <h3>Contact Information & Social Channels</h3>
+                    <button class="btn btn-sm btn-primary" (click)="saveSettings()">Save Settings</button>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Official Email</label>
+                    <input type="email" [(ngModel)]="settingsForm().email" class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Direct Phone</label>
+                    <input type="text" [(ngModel)]="settingsForm().phone" class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Base Address</label>
+                    <input type="text" [(ngModel)]="settingsForm().address" class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>WhatsApp Link</label>
+                    <input type="text" [(ngModel)]="settingsForm().socials.whatsapp" class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>LinkedIn URL</label>
+                    <input type="text" [(ngModel)]="settingsForm().socials.linkedin" class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>YouTube Channel</label>
+                    <input type="text" [(ngModel)]="settingsForm().socials.youtube" class="form-input">
+                  </div>
+                </div>
+
+                <!-- Admin Security & PIN -->
+                <div class="glass-card admin-form-card">
+                  <div class="card-box-header">
+                    <h3>Admin Security & PIN</h3>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Set New Studio PIN (min 4 characters)</label>
+                    <input type="password" [(ngModel)]="newPinInput" placeholder="Enter new PIN" class="form-input">
+                    <button class="btn btn-secondary btn-sm" style="margin-top: 10px;" (click)="changePin()">
+                      <i class="fa-solid fa-key"></i> Update PIN
+                    </button>
+                  </div>
+
+                  <div class="backup-restore-box">
+                    <h4>Data Backup & Disaster Recovery</h4>
+                    <p>Export all website text, stats, books, and images into a single portable JSON file.</p>
+
+                    <div class="backup-actions">
+                      <button class="btn btn-primary" (click)="exportJson()">
+                        <i class="fa-solid fa-download"></i> Export JSON Backup
+                      </button>
+
+                      <label class="btn btn-secondary file-upload-btn">
+                        <i class="fa-solid fa-upload"></i> Restore from JSON
+                        <input type="file" accept=".json" (change)="handleImportJson($event)" style="display: none;">
+                      </label>
+                    </div>
+
+                    <div class="reset-danger-box">
+                      <h5>Reset to Original Seed Data</h5>
+                      <p>Restore default titles, books, accolades, and seed photos.</p>
+                      <button class="btn btn-danger-outline" (click)="resetSeedData()">
+                        <i class="fa-solid fa-rotate-left"></i> Reset to Factory Default
+                      </button>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          }
+
+        </div>
+
+      </main>
+
+    </div>
+  }
+
+</div>

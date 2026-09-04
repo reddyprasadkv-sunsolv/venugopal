@@ -1,0 +1,101 @@
+import { Component, inject, signal, OnInit, ElementRef } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { DataService } from '../../services/data.service';
+import { Book } from '../../models/content.models';
+import { BookModalComponent } from '../../components/book-modal/book-modal';
+
+@Component({
+  selector: 'app-home',
+  standalone: true,
+  imports: [CommonModule, RouterLink, BookModalComponent],
+  templateUrl: './home.html',
+  styleUrl: './home.css'
+})
+export class HomePageComponent implements OnInit {
+  private dataService = inject(DataService);
+  private el = inject(ElementRef);
+
+  readonly hero = this.dataService.hero;
+  readonly profile = this.dataService.profile;
+  readonly stats = this.dataService.stats;
+  readonly bentoPillars = this.dataService.bentoPillars;
+  readonly featuredBooks = this.dataService.featuredBooks;
+  readonly awards = this.dataService.awards;
+  readonly services = this.dataService.services;
+
+  selectedBook = signal<Book | null>(null);
+  activeStatCounts = signal<{ [key: string]: number }>({});
+  private animatedStats = false;
+
+  ngOnInit(): void {
+    this.setupIntersectionObserver();
+  }
+
+  openBookModal(book: Book): void {
+    this.selectedBook.set(book);
+  }
+
+  closeBookModal(): void {
+    this.selectedBook.set(null);
+  }
+
+  private setupIntersectionObserver(): void {
+    if (typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !this.animatedStats) {
+            this.animatedStats = true;
+            this.animateCounters();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    setTimeout(() => {
+      const statsSection = this.el.nativeElement.querySelector('.metrics-bento-section');
+      if (statsSection) {
+        observer.observe(statsSection);
+      }
+    }, 100);
+  }
+
+  private animateCounters(): void {
+    const statsList = this.stats();
+    const duration = 1800; // ms
+    const startTime = performance.now();
+
+    const updateCounts = (now: number) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      // easeOutExpo
+      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+
+      const counts: { [key: string]: number } = {};
+      statsList.forEach((st) => {
+        counts[st.id] = Math.floor(st.value * ease);
+      });
+
+      this.activeStatCounts.set(counts);
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCounts);
+      } else {
+        const finalCounts: { [key: string]: number } = {};
+        statsList.forEach((st) => {
+          finalCounts[st.id] = st.value;
+        });
+        this.activeStatCounts.set(finalCounts);
+      }
+    };
+
+    requestAnimationFrame(updateCounts);
+  }
+
+  getDisplayCount(statId: string, defaultValue: number): number {
+    const currentCounts = this.activeStatCounts();
+    return currentCounts[statId] !== undefined ? currentCounts[statId] : defaultValue;
+  }
+}

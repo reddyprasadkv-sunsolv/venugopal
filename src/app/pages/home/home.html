@@ -1,0 +1,352 @@
+<div class="home-view">
+
+  <!-- =========================================================================
+       HERO SECTION: APPLE INTELLIGENCE LIQUID AURORA
+       ========================================================================= -->
+  <section class="apple-hero-section">
+    
+    <!-- Ambient Aurora Glow Orbs -->
+    <div class="aurora-orb orb-1"></div>
+    <div class="aurora-orb orb-2"></div>
+    <div class="aurora-orb orb-3"></div>
+
+    <div class="container hero-container">
+      
+      <!-- Left Hero Text & CTA -->
+      <div class="hero-content">
+        
+        <div class="apple-badge hero-badge">
+          <span class="pulse-dot"></span>
+          <span>{{ hero().badge }}</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span>{{ hero().titlePrefix }}</span><br>
+          <span class="gradient-text-aurora">{{ hero().titleHighlight }}</span><br>
+          <span>{{ hero().titleSuffix }}</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          {{ hero().subtitle }}
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="hero-actions">
+          <a [routerLink]="hero().primaryCtaLink" class="btn btn-primary btn-lg">
+            <span>{{ hero().primaryCtaText }}</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <a [routerLink]="hero().secondaryCtaLink" class="btn btn-secondary btn-lg">
+            <i class="fa-solid fa-calendar-plus"></i>
+            <span>{{ hero().secondaryCtaText }}</span>
+          </a>
+        </div>
+
+        <!-- Trust Badges & Honors Pill Bar -->
+        <div class="hero-credentials-bar">
+          <div class="cred-item">
+            <i class="fa-solid fa-award"></i>
+            <span>Global Indian Awardee</span>
+          </div>
+          <div class="cred-item">
+            <i class="fa-solid fa-trophy"></i>
+            <span>3x World Records</span>
+          </div>
+          <div class="cred-item">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Ph.D • MBA-HR • LLB</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Spotlight Portrait Card with Apple Aurora Border -->
+      <div class="hero-visual">
+        <div class="aurora-glow-frame">
+          <div class="portrait-card">
+            <img [src]="hero().heroImage" [alt]="profile().name" class="portrait-image">
+            
+            <div class="portrait-overlay">
+              <div class="author-title-block">
+                <span class="author-name">{{ profile().name }}</span>
+                <span class="author-role">{{ profile().title }}</span>
+              </div>
+            </div>
+
+            <!-- Floating Badge 1: 16+ Yrs -->
+            <div class="floating-badge badge-top-right">
+              <div class="badge-icon"><i class="fa-solid fa-briefcase"></i></div>
+              <div class="badge-text">
+                <strong>16+ Years</strong>
+                <span>HR & IT Leadership</span>
+              </div>
+            </div>
+
+            <!-- Floating Badge 2: 27K+ Mentored -->
+            <div class="floating-badge badge-bottom-left">
+              <div class="badge-icon"><i class="fa-solid fa-users"></i></div>
+              <div class="badge-text">
+                <strong>27,000+ Youth</strong>
+                <span>Mentored in 3 Years</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       METRICS BENTO SECTION: LIVE COUNTER
+       ========================================================================= -->
+  <section class="metrics-bento-section">
+    <div class="container">
+      <div class="metrics-grid">
+        @for (item of stats(); track item.id) {
+          <div class="metric-card glass-card">
+            <div class="metric-val-wrap">
+              <span class="metric-number gradient-text-aurora">
+                {{ getDisplayCount(item.id, item.value) | number }}{{ item.suffix }}
+              </span>
+            </div>
+            <h3 class="metric-label">{{ item.label }}</h3>
+            <p class="metric-desc">{{ item.description }}</p>
+            <div class="card-glow-accent"></div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       CORE PILLARS BENTO GRID: "MAKE SOMETHING DIFFERENT!"
+       ========================================================================= -->
+  <section class="bento-pillars-section">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-tag">Core Philosophy</span>
+        <h2><span class="gradient-text">Make Something Different!</span></h2>
+        <p>A multidisciplinary visionary bridging strategic enterprise capability with grassroots youth empowerment.</p>
+      </div>
+
+      <div class="bento-grid">
+        @for (pillar of bentoPillars(); track pillar.id; let idx = $index) {
+          <div class="glass-card pillar-card" [class.col-6]="true">
+            <div class="pillar-image-wrap">
+              <img [src]="pillar.image" [alt]="pillar.title" class="pillar-img">
+              <div class="pillar-img-gradient"></div>
+              <span class="pillar-tag">{{ pillar.tag }}</span>
+            </div>
+            <div class="pillar-body">
+              <h3 class="pillar-title">{{ pillar.title }}</h3>
+              <h4 class="pillar-subtitle">{{ pillar.subtitle }}</h4>
+              <p class="pillar-desc">{{ pillar.description }}</p>
+              <a [routerLink]="pillar.linkUrl" class="pillar-link">
+                <span>{{ pillar.linkText }}</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       FEATURED BOOKS SHOWCASE
+       ========================================================================= -->
+  <section class="featured-books-section">
+    <div class="container">
+      
+      <div class="section-header-flex">
+        <div>
+          <span class="section-tag">Published Works</span>
+          <h2><span class="gradient-text">Bestselling Books & Frameworks</span></h2>
+          <p>Author of 9 landmark titles on leadership, career transition, hiring, and personal wellness.</p>
+        </div>
+        <a routerLink="/my-books" class="btn btn-secondary">
+          <span>View All 9 Titles</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="books-grid">
+        @for (book of featuredBooks(); track book.id) {
+          <div class="book-card glass-card" (click)="openBookModal(book)">
+            <div class="book-cover-container">
+              <img [src]="book.coverImage" [alt]="book.title" class="book-cover-img">
+              <div class="book-hover-overlay">
+                <span class="btn btn-sm btn-primary">
+                  <i class="fa-solid fa-book-open"></i> Read Synopsis
+                </span>
+              </div>
+            </div>
+            
+            <div class="book-card-info">
+              <div class="book-cat-row">
+                <span class="cat-pill">{{ book.category }}</span>
+                @if (book.isUnveiledByVIP) {
+                  <span class="vip-badge" title="Unveiled by Former Vice President of India">
+                    <i class="fa-solid fa-crown"></i> VIP Launch
+                  </span>
+                }
+              </div>
+              <h3 class="book-card-title">{{ book.title }}</h3>
+              <p class="book-card-subtitle">{{ book.subtitle }}</p>
+              
+              <div class="book-card-footer">
+                <button type="button" class="btn-read-more" (click)="$event.stopPropagation(); openBookModal(book)">
+                  <span>Explore Book</span>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <a [href]="book.amazonUrl" target="_blank" rel="noopener" class="btn-amazon-quick" (click)="$event.stopPropagation()" title="Buy on Amazon">
+                  <i class="fa-brands fa-amazon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       VIDEO KEYNOTE & MEDIA SPOTLIGHT
+       ========================================================================= -->
+  <section class="video-spotlight-section">
+    <div class="container">
+      
+      <div class="glass-card video-feature-card">
+        <div class="video-grid">
+          
+          <div class="video-text-content">
+            <span class="apple-badge">
+              <i class="fa-solid fa-circle-play"></i>
+              <span>Keynote Address</span>
+            </span>
+            <h2>Visionary Leadership & Educational Innovation</h2>
+            <p>
+              Watch Dr. Chikkala Venugopal Rao deliver an impactful keynote session on career transformation, modern management ethics, and unleashing youth potential across educational institutions.
+            </p>
+            <div class="video-speaker-stats">
+              <div class="v-stat">
+                <strong>125+</strong>
+                <span>Keynote Seminars</span>
+              </div>
+              <div class="v-stat">
+                <strong>3</strong>
+                <span>World Records</span>
+              </div>
+              <div class="v-stat">
+                <strong>27K+</strong>
+                <span>Delegates</span>
+              </div>
+            </div>
+            <a routerLink="/contact" class="btn btn-primary">
+              <i class="fa-solid fa-calendar-check"></i>
+              <span>Invite Dr. Venugopal as Speaker</span>
+            </a>
+          </div>
+
+          <div class="video-embed-wrap">
+            <div class="video-frame-container">
+              <iframe 
+                src="https://www.youtube-nocookie.com/embed/vLFxOOEyhUE?iv_load_policy=3&rel=0" 
+                title="Dr. Chikkala Venugopal Rao Keynote Video" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       HONORS & AWARDS PREVIEW
+       ========================================================================= -->
+  <section class="awards-preview-section">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-tag">Recognition & Prestige</span>
+        <h2><span class="gradient-text">Prestigious National Accolades</span></h2>
+        <p>Honored by Presidents, Governors, and premier national bodies for trailblazing HR leadership.</p>
+      </div>
+
+      <div class="awards-grid">
+        @for (award of awards().slice(0, 3); track award.id) {
+          <div class="glass-card award-card">
+            <div class="award-top-row">
+              <div class="award-icon-box">
+                <i class="fa-solid fa-trophy"></i>
+              </div>
+              <span class="award-year-tag">{{ award.year }}</span>
+            </div>
+            <h3 class="award-title">{{ award.title }}</h3>
+            <h4 class="award-conferred">{{ award.conferredBy }}</h4>
+            <p class="award-desc">{{ award.description }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="awards-bottom-cta">
+        <a routerLink="/about-me" class="btn btn-secondary">
+          <span>Explore All Honors & Biography</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       SPEAKER INVITATION & CONSULTING TEASER
+       ========================================================================= -->
+  <section class="cta-banner-section">
+    <div class="container">
+      
+      <div class="glass-card cta-banner-card">
+        <div class="cta-glow-aurora"></div>
+        <div class="cta-inner">
+          <span class="apple-badge">
+            <span class="pulse-dot"></span>
+            <span>Now Booking for 2026 Conclaves & Advisory</span>
+          </span>
+          <h2 class="cta-heading">Elevate Your Next Conference or Enterprise Strategy</h2>
+          <p class="cta-sub">
+            Whether booking an unforgettable keynote, conducting senior executive coaching, or transforming your talent strategy through Verch Consulting LLP.
+          </p>
+          <div class="cta-btn-group">
+            <a routerLink="/contact" class="btn btn-primary btn-lg">
+              <span>Initiate Speaker Request</span>
+              <i class="fa-solid fa-paper-plane"></i>
+            </a>
+            <a routerLink="/services" class="btn btn-secondary btn-lg">
+              <span>Explore Consulting Services</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Detail Modal -->
+  <app-book-modal [book]="selectedBook()" (close)="closeBookModal()"></app-book-modal>
+
+</div>

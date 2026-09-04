@@ -1,0 +1,403 @@
+import { Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { DataService } from '../../services/data.service';
+import { AuthService } from '../../services/auth.service';
+import {
+  HeroData,
+  AuthorProfile,
+  StatMetric,
+  Book,
+  Award,
+  ServiceItem,
+  GalleryPhoto,
+  LeadInquiry,
+  SiteSettings
+} from '../../models/content.models';
+
+type AdminTab = 'overview' | 'hero' | 'services' | 'books' | 'awards' | 'gallery' | 'leads' | 'settings';
+
+@Component({
+  selector: 'app-admin',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
+  templateUrl: './admin.html',
+  styleUrl: './admin.css'
+})
+export class AdminComponent {
+  private dataService = inject(DataService);
+  private authService = inject(AuthService);
+
+  readonly isAuthenticated = this.authService.isAuthenticated;
+  readonly siteData = this.dataService.siteData;
+  readonly hero = this.dataService.hero;
+  readonly profile = this.dataService.profile;
+  readonly stats = this.dataService.stats;
+  readonly books = this.dataService.books;
+  readonly services = this.dataService.services;
+  readonly awards = this.dataService.awards;
+  readonly gallery = this.dataService.gallery;
+  readonly leads = this.dataService.leads;
+  readonly settings = this.dataService.settings;
+
+  // Active Tab
+  currentTab = signal<AdminTab>('overview');
+
+  // Auth Model
+  pinInput = signal<string>('');
+  authError = signal<string>('');
+
+  // Toast Notification
+  toastMessage = signal<string>('');
+  toastType = signal<'success' | 'info' | 'error'>('success');
+
+  // Form State Clones for Editing
+  heroForm = signal<HeroData>({ ...this.hero() });
+  profileForm = signal<AuthorProfile>({ ...this.profile() });
+  settingsForm = signal<SiteSettings>({ ...this.settings() });
+  statsForm = signal<StatMetric[]>(JSON.parse(JSON.stringify(this.stats())));
+
+  // Modal / Inline Edit States for CRUD
+  editingBook = signal<Book | null>(null);
+  isAddingBook = signal<boolean>(false);
+  newBookForm = signal<Omit<Book, 'id'>>({
+    title: '',
+    subtitle: '',
+    category: 'Leadership',
+    author: 'Dr. Chikkala Venugopal Rao',
+    coverImage: 'images/books/beyond_bossing.jpg',
+    description: '',
+    keyTakeaways: ['Key takeaway 1', 'Key takeaway 2'],
+    pages: 200,
+    publisher: 'Verch Publications',
+    amazonUrl: 'https://www.amazon.in',
+    isUnveiledByVIP: false,
+    vipNote: '',
+    featured: true
+  });
+
+  editingService = signal<ServiceItem | null>(null);
+  isAddingService = signal<boolean>(false);
+  newServiceForm = signal<Omit<ServiceItem, 'id'>>({
+    title: '',
+    subtitle: '',
+    icon: 'briefcase',
+    image: 'images/ad.jpg',
+    description: '',
+    targetAudience: 'Corporates & Leaders',
+    keyDeliverables: ['Deliverable 1', 'Deliverable 2'],
+    badge: 'Corporate Advisory'
+  });
+
+  editingAward = signal<Award | null>(null);
+  isAddingAward = signal<boolean>(false);
+  newAwardForm = signal<Omit<Award, 'id'>>({
+    title: '',
+    conferredBy: '',
+    year: new Date().getFullYear().toString(),
+    description: '',
+    iconType: 'trophy',
+    badgeColor: '#00b4d8'
+  });
+
+  editingPhoto = signal<GalleryPhoto | null>(null);
+  isAddingPhoto = signal<boolean>(false);
+  newPhotoForm = signal<Omit<GalleryPhoto, 'id'>>({
+    title: '',
+    category: 'Keynotes',
+    imageUrl: 'images/ad.jpg',
+    caption: '',
+    location: 'Hyderabad',
+    year: '2026',
+    featured: true
+  });
+
+  // PIN settings
+  newPinInput = signal<string>('');
+
+  setTab(tab: AdminTab): void {
+    this.currentTab.set(tab);
+    // Refresh cloned models from signal
+    this.heroForm.set({ ...this.hero() });
+    this.profileForm.set(JSON.parse(JSON.stringify(this.profile())));
+    this.settingsForm.set(JSON.parse(JSON.stringify(this.settings())));
+    this.statsForm.set(JSON.parse(JSON.stringify(this.stats())));
+  }
+
+  showToast(msg: string, type: 'success' | 'info' | 'error' = 'success'): void {
+    this.toastMessage.set(msg);
+    this.toastType.set(type);
+    setTimeout(() => {
+      this.toastMessage.set('');
+    }, 3500);
+  }
+
+  // Authentication
+  login(): void {
+    const success = this.authService.login(this.pinInput());
+    if (success) {
+      this.authError.set('');
+      this.pinInput.set('');
+      this.showToast('Welcome to CRM Studio!');
+    } else {
+      this.authError.set('Incorrect PIN. (Default PIN is 1234 or admin2026)');
+    }
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.showToast('Logged out successfully', 'info');
+  }
+
+  changePin(): void {
+    if (this.newPinInput().length >= 4) {
+      this.authService.setCustomPin(this.newPinInput());
+      this.newPinInput.set('');
+      this.showToast('PIN updated successfully!');
+    } else {
+      this.showToast('PIN must be at least 4 characters', 'error');
+    }
+  }
+
+  // Hero & Profile Save
+  saveHero(): void {
+    this.dataService.updateHero(this.heroForm());
+    this.showToast('Hero section updated successfully!');
+  }
+
+  saveProfile(): void {
+    this.dataService.updateProfile(this.profileForm());
+    this.showToast('Executive profile & bio updated!');
+  }
+
+  saveStats(): void {
+    this.dataService.updateStats(this.statsForm());
+    this.showToast('Metrics counters updated!');
+  }
+
+  saveSettings(): void {
+    this.dataService.updateSettings(this.settingsForm());
+    this.showToast('Site settings & socials updated!');
+  }
+
+  // Image Upload helper (converts file to data URL)
+  handleImageUpload(event: Event, targetCallback: (dataUrl: string) => void): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          targetCallback(e.target.result as string);
+          this.showToast('Image uploaded and preview updated!');
+        }
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  // Books CRUD
+  startAddBook(): void {
+    this.isAddingBook.set(true);
+    this.editingBook.set(null);
+  }
+
+  saveNewBook(): void {
+    const b = this.newBookForm();
+    if (!b.title) {
+      this.showToast('Book title is required', 'error');
+      return;
+    }
+    this.dataService.addBook(b);
+    this.isAddingBook.set(false);
+    this.showToast(`Book "${b.title}" added to library!`);
+  }
+
+  editBook(book: Book): void {
+    this.editingBook.set(JSON.parse(JSON.stringify(book)));
+    this.isAddingBook.set(false);
+  }
+
+  saveEditedBook(): void {
+    const b = this.editingBook();
+    if (b) {
+      this.dataService.updateBook(b);
+      this.editingBook.set(null);
+      this.showToast(`Book "${b.title}" updated!`);
+    }
+  }
+
+  deleteBook(book: Book): void {
+    if (confirm(`Are you sure you want to delete book "${book.title}"?`)) {
+      this.dataService.deleteBook(book.id);
+      this.showToast(`Book "${book.title}" deleted`, 'info');
+    }
+  }
+
+  // Services CRUD
+  startAddService(): void {
+    this.isAddingService.set(true);
+    this.editingService.set(null);
+  }
+
+  saveNewService(): void {
+    const s = this.newServiceForm();
+    if (!s.title) {
+      this.showToast('Service title is required', 'error');
+      return;
+    }
+    this.dataService.addService(s);
+    this.isAddingService.set(false);
+    this.showToast(`Service "${s.title}" created!`);
+  }
+
+  editService(svc: ServiceItem): void {
+    this.editingService.set(JSON.parse(JSON.stringify(svc)));
+    this.isAddingService.set(false);
+  }
+
+  saveEditedService(): void {
+    const s = this.editingService();
+    if (s) {
+      this.dataService.updateService(s);
+      this.editingService.set(null);
+      this.showToast(`Service "${s.title}" updated!`);
+    }
+  }
+
+  deleteService(svc: ServiceItem): void {
+    if (confirm(`Are you sure you want to delete service "${svc.title}"?`)) {
+      this.dataService.deleteService(svc.id);
+      this.showToast(`Service "${svc.title}" deleted`, 'info');
+    }
+  }
+
+  // Awards CRUD
+  startAddAward(): void {
+    this.isAddingAward.set(true);
+    this.editingAward.set(null);
+  }
+
+  saveNewAward(): void {
+    const a = this.newAwardForm();
+    if (!a.title) {
+      this.showToast('Award title is required', 'error');
+      return;
+    }
+    this.dataService.addAward(a);
+    this.isAddingAward.set(false);
+    this.showToast(`Award "${a.title}" added!`);
+  }
+
+  editAward(award: Award): void {
+    this.editingAward.set(JSON.parse(JSON.stringify(award)));
+    this.isAddingAward.set(false);
+  }
+
+  saveEditedAward(): void {
+    const a = this.editingAward();
+    if (a) {
+      this.dataService.updateAward(a);
+      this.editingAward.set(null);
+      this.showToast(`Award "${a.title}" updated!`);
+    }
+  }
+
+  deleteAward(award: Award): void {
+    if (confirm(`Delete award "${award.title}"?`)) {
+      this.dataService.deleteAward(award.id);
+      this.showToast(`Award "${award.title}" deleted`, 'info');
+    }
+  }
+
+  // Gallery CRUD
+  startAddPhoto(): void {
+    this.isAddingPhoto.set(true);
+    this.editingPhoto.set(null);
+  }
+
+  saveNewPhoto(): void {
+    const p = this.newPhotoForm();
+    if (!p.title) {
+      this.showToast('Photo title is required', 'error');
+      return;
+    }
+    this.dataService.addGalleryPhoto(p);
+    this.isAddingPhoto.set(false);
+    this.showToast(`Photo "${p.title}" added to gallery!`);
+  }
+
+  editPhoto(photo: GalleryPhoto): void {
+    this.editingPhoto.set(JSON.parse(JSON.stringify(photo)));
+    this.isAddingPhoto.set(false);
+  }
+
+  saveEditedPhoto(): void {
+    const p = this.editingPhoto();
+    if (p) {
+      this.dataService.updateGalleryPhoto(p);
+      this.editingPhoto.set(null);
+      this.showToast(`Photo "${p.title}" updated!`);
+    }
+  }
+
+  deletePhoto(photo: GalleryPhoto): void {
+    if (confirm(`Delete photo "${photo.title}"?`)) {
+      this.dataService.deleteGalleryPhoto(photo.id);
+      this.showToast(`Photo "${photo.title}" deleted`, 'info');
+    }
+  }
+
+  // Leads CRM
+  updateLead(id: string, status: LeadInquiry['status'], notes?: string): void {
+    this.dataService.updateLeadStatus(id, status, notes);
+    this.showToast('Lead status updated!');
+  }
+
+  deleteLead(lead: LeadInquiry): void {
+    if (confirm(`Delete inquiry from ${lead.name}?`)) {
+      this.dataService.deleteLead(lead.id);
+      this.showToast('Inquiry removed from CRM', 'info');
+    }
+  }
+
+  // Data Export & Import
+  exportJson(): void {
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(this.dataService.exportData());
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute('href', dataStr);
+    downloadAnchor.setAttribute('download', `dr_venugopal_site_backup_${new Date().toISOString().slice(0,10)}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    this.showToast('Site data exported to JSON backup file!');
+  }
+
+  handleImportJson(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result as string;
+        if (text) {
+          const ok = this.dataService.importData(text);
+          if (ok) {
+            this.showToast('Backup imported successfully!');
+            this.setTab('overview');
+          } else {
+            this.showToast('Failed to import. Invalid JSON structure.', 'error');
+          }
+        }
+      };
+      reader.readAsText(input.files[0]);
+    }
+  }
+
+  resetSeedData(): void {
+    if (confirm('Are you sure you want to reset all site content and images back to default seed data?')) {
+      this.dataService.resetToDefaultData();
+      this.setTab('overview');
+      this.showToast('Site content reset to default successfully!');
+    }
+  }
+}

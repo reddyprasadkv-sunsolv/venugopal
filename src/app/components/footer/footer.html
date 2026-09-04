@@ -1,0 +1,102 @@
+<footer class="apple-footer">
+  
+  <!-- Subtle Glowing Top Border Accent -->
+  <div class="footer-glow-line"></div>
+
+  <div class="container footer-main">
+    <div class="footer-grid">
+      
+      <!-- Brand & Bio Column -->
+      <div class="footer-col brand-col">
+        <div class="footer-brand">
+          <div class="brand-crest">
+            <span class="crest-monogram">VR</span>
+          </div>
+          <div>
+            <h3 class="footer-name">Dr. Chikkala Venugopal Rao</h3>
+            <p class="footer-tagline">Human Resources Leader • Author • Keynote Speaker</p>
+          </div>
+        </div>
+
+        <p class="footer-bio-snippet">
+          Empowering organizations and mentoring India's next generation with actionable leadership wisdom, career blueprints, and 3x World Record impact.
+        </p>
+
+        <!-- Social Channels -->
+        <div class="footer-social-links">
+          <a [href]="settings().socials.facebook" target="_blank" rel="noopener" aria-label="Facebook" class="social-bubble">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a [href]="settings().socials.twitter" target="_blank" rel="noopener" aria-label="Twitter" class="social-bubble">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+          <a [href]="settings().socials.youtube" target="_blank" rel="noopener" aria-label="YouTube" class="social-bubble">
+            <i class="fa-brands fa-youtube"></i>
+          </a>
+          <a [href]="settings().socials.instagram" target="_blank" rel="noopener" aria-label="Instagram" class="social-bubble">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a [href]="settings().socials.whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-bubble">
+            <i class="fa-brands fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Navigation -->
+      <div class="footer-col">
+        <h4 class="footer-heading">Navigation</h4>
+        <ul class="footer-links">
+          <li><a routerLink="/"><i class="fa-solid fa-angle-right"></i> Home Overview</a></li>
+          <li><a routerLink="/about-me"><i class="fa-solid fa-angle-right"></i> Executive Biography</a></li>
+          <li><a routerLink="/services"><i class="fa-solid fa-angle-right"></i> Consulting & Keynotes</a></li>
+          <li><a routerLink="/my-books"><i class="fa-solid fa-angle-right"></i> Literary Library</a></li>
+          <li><a routerLink="/photography"><i class="fa-solid fa-angle-right"></i> Photo Gallery</a></li>
+          <li><a routerLink="/contact"><i class="fa-solid fa-angle-right"></i> Speaker Invitation</a></li>
+        </ul>
+      </div>
+
+      <!-- Featured Books Spotlight -->
+      <div class="footer-col">
+        <h4 class="footer-heading">Bestselling Books</h4>
+        <ul class="footer-links">
+          <li><a routerLink="/my-books"><i class="fa-solid fa-book-bookmark"></i> Beyond Bossing</a></li>
+          <li><a routerLink="/my-books"><i class="fa-solid fa-book-bookmark"></i> Campus to Corporate</a></li>
+          <li><a routerLink="/my-books"><i class="fa-solid fa-book-bookmark"></i> Coaching & Mentoring</a></li>
+          <li><a routerLink="/my-books"><i class="fa-solid fa-book-bookmark"></i> Smart Hiring</a></li>
+          <li><a routerLink="/my-books"><i class="fa-solid fa-book-bookmark"></i> Stress Management</a></li>
+          <li><a routerLink="/my-books"><i class="fa-solid fa-book-bookmark"></i> View All 9 Titles</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact & Office Info -->
+      <div class="footer-col contact-col">
+        <h4 class="footer-heading">Connect & Consult</h4>
+        <ul class="footer-contact-list">
+          <li>
+            <i class="fa-solid fa-location-dot"></i>
+            <span>{{ settings().address }}</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <a [href]="'mailto:' + settings().email">{{ settings().email }}</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <a [href]="'tel:' + settings().phone">{{ settings().phone }}</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Legal Strip -->
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p class="copyright">{{ settings().copyrightText }}</p>
+      <div class="footer-attribution">
+        <span>Made with <i class="fa-solid fa-heart text-heart"></i> by <a href="https://sunsolv.in/" target="_blank" rel="noopener" class="sunsolv-link">Sunsolv Technologies</a></span>
+      </div>
+    </div>
+  </div>
+</footer>

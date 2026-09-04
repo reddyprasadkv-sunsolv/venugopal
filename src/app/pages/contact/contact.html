@@ -1,0 +1,282 @@
+<div class="contact-page-view">
+
+  <!-- =========================================================================
+       PAGE HERO BANNER
+       ========================================================================= -->
+  <section class="page-hero-banner">
+    <div class="container">
+      <div class="page-hero-content">
+        <span class="apple-badge">
+          <i class="fa-solid fa-calendar-check"></i>
+          <span>Speaker Booking & Engagement Desk</span>
+        </span>
+        <h1 class="page-title"><span class="gradient-text-aurora">Connect & Collaborate</span></h1>
+        <p class="page-lead">
+          Invite Dr. Chikkala Venugopal Rao for keynote addresses, corporate consulting, executive coaching, or academic convocations.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       CONTACT MAIN GRID
+       ========================================================================= -->
+  <section class="contact-main-section">
+    <div class="container">
+      
+      <div class="contact-grid">
+        
+        <!-- Left Column: Info Cards & Channels -->
+        <div class="contact-info-col">
+          
+          <div class="glass-card direct-info-card">
+            <span class="section-tag">Direct Coordinates</span>
+            <h3>Dr. Venugopal Rao's Advisory Office</h3>
+            <p class="office-sub">Verch Consulting LLP • Global Engagements</p>
+
+            <div class="info-items-list">
+              
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="info-text">
+                  <span class="info-label">Base Location</span>
+                  <span class="info-val">{{ settings().address }}</span>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+                <div class="info-text">
+                  <span class="info-label">Official Email</span>
+                  <a [href]="'mailto:' + settings().email" class="info-link">{{ settings().email }}</a>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                <div class="info-text">
+                  <span class="info-label">Direct Phone / Secretariat</span>
+                  <a [href]="'tel:' + settings().phone" class="info-link">{{ settings().phone }}</a>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- WhatsApp Instant Connect -->
+            <a [href]="settings().socials.whatsapp" target="_blank" rel="noopener" class="btn-whatsapp">
+              <i class="fa-brands fa-whatsapp"></i>
+              <span>Instant WhatsApp Discussion</span>
+            </a>
+
+          </div>
+
+          <!-- Social Channels Card -->
+          <div class="glass-card social-hub-card">
+            <h4>Follow Dr. Venugopal Across Platforms</h4>
+            <p>Stay updated on new book releases, research papers, and keynote broadcasts.</p>
+
+            <div class="social-grid">
+              <a [href]="settings().socials.facebook" target="_blank" rel="noopener" class="social-card-btn">
+                <i class="fa-brands fa-facebook-f"></i>
+                <span>Facebook</span>
+              </a>
+              <a [href]="settings().socials.twitter" target="_blank" rel="noopener" class="social-card-btn">
+                <i class="fa-brands fa-x-twitter"></i>
+                <span>Twitter / X</span>
+              </a>
+              <a [href]="settings().socials.youtube" target="_blank" rel="noopener" class="social-card-btn">
+                <i class="fa-brands fa-youtube"></i>
+                <span>YouTube</span>
+              </a>
+              <a [href]="settings().socials.instagram" target="_blank" rel="noopener" class="social-card-btn">
+                <i class="fa-brands fa-instagram"></i>
+                <span>Instagram</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Interactive Booking & Consultation Form -->
+        <div class="contact-form-col">
+          <div class="glass-card booking-form-card">
+            
+            <div class="form-header">
+              <span class="section-tag">Direct Inquiry</span>
+              <h2>Speaker & Consulting Request</h2>
+              <p>Fill out the details below and our executive desk will respond within 24 business hours.</p>
+            </div>
+
+            @if (isSubmitted()) {
+              <div class="success-banner glass-card">
+                <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <h3>Thank You! Your Request Has Been Received</h3>
+                <p>Our office has logged your inquiry into our executive CRM. We will contact you shortly to coordinate details.</p>
+                <button type="button" class="btn btn-secondary" (click)="isSubmitted.set(false)">
+                  Submit Another Request
+                </button>
+              </div>
+            } @else {
+              <form class="inquiry-form" (submit)="$event.preventDefault(); onSubmit()">
+                
+                @if (errorMessage()) {
+                  <div class="error-banner">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>{{ errorMessage() }}</span>
+                  </div>
+                }
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="fullName">Full Name <span class="req">*</span></label>
+                    <input 
+                      type="text" 
+                      id="fullName" 
+                      [ngModel]="name()" 
+                      (ngModelChange)="name.set($event)" 
+                      name="fullName"
+                      placeholder="e.g. Dr. Rajesh Kumar" 
+                      required 
+                      class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="emailAddr">Email Address <span class="req">*</span></label>
+                    <input 
+                      type="email" 
+                      id="emailAddr" 
+                      [ngModel]="email()" 
+                      (ngModelChange)="email.set($event)" 
+                      name="emailAddr"
+                      placeholder="e.g. rajesh@company.com" 
+                      required 
+                      class="form-input">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="phoneNum">Phone / Mobile Number <span class="req">*</span></label>
+                    <input 
+                      type="tel" 
+                      id="phoneNum" 
+                      [ngModel]="phone()" 
+                      (ngModelChange)="phone.set($event)" 
+                      name="phoneNum"
+                      placeholder="e.g. +91 98480 12345" 
+                      required 
+                      class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="orgName">Organization / Institution</label>
+                    <input 
+                      type="text" 
+                      id="orgName" 
+                      [ngModel]="organization()" 
+                      (ngModelChange)="organization.set($event)" 
+                      name="orgName"
+                      placeholder="e.g. Apex Pharma / University" 
+                      class="form-input">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="inqType">Engagement Nature <span class="req">*</span></label>
+                    <select 
+                      id="inqType" 
+                      [ngModel]="inquiryType()" 
+                      (ngModelChange)="inquiryType.set($event)" 
+                      name="inqType"
+                      class="form-select">
+                      <option value="Keynote Speaker">Keynote Speaker / Conference Address</option>
+                      <option value="Corporate Consulting">Corporate Consulting (Verch Consulting LLP)</option>
+                      <option value="Youth Mentorship">Youth / College Skilling Drive</option>
+                      <option value="Book Query">Book Query / Bulk Order</option>
+                      <option value="General">General Inquiries</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="evtDate">Proposed Event Date (Optional)</label>
+                    <input 
+                      type="date" 
+                      id="evtDate" 
+                      [ngModel]="eventDate()" 
+                      (ngModelChange)="eventDate.set($event)" 
+                      name="evtDate"
+                      class="form-input">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="msgContent">Detailed Message & Objective <span class="req">*</span></label>
+                  <textarea 
+                    id="msgContent" 
+                    [ngModel]="message()" 
+                    (ngModelChange)="message.set($event)" 
+                    name="msgContent"
+                    rows="4" 
+                    placeholder="Tell us about your event theme, audience size, key objectives, or specific advisory requirements..." 
+                    required 
+                    class="form-textarea"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-submit" [disabled]="isSubmitting()">
+                  @if (isSubmitting()) {
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <span>Submitting Request...</span>
+                  } @else {
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Send Speaker / Consulting Inquiry</span>
+                  }
+                </button>
+
+              </form>
+            }
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       FAQ ACCORDION SECTION
+       ========================================================================= -->
+  <section class="faq-section">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-tag">Frequently Asked Questions</span>
+        <h2><span class="gradient-text">Event Organizer & Client Guide</span></h2>
+        <p>Essential guidance for booking keynotes, consulting sessions, and workshops.</p>
+      </div>
+
+      <div class="faq-accordion-container">
+        @for (item of faqs; track $index; let idx = $index) {
+          <div class="faq-item glass-card" [class.open]="openFaqId() === idx">
+            <button class="faq-question-btn" (click)="toggleFaq(idx)">
+              <span class="faq-q-text">{{ item.q }}</span>
+              <span class="faq-icon-indicator">
+                <i class="fa-solid" [class.fa-plus]="openFaqId() !== idx" [class.fa-minus]="openFaqId() === idx"></i>
+              </span>
+            </button>
+            @if (openFaqId() === idx) {
+              <div class="faq-answer">
+                <p>{{ item.a }}</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+</div>

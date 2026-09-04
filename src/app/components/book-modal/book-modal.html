@@ -1,0 +1,92 @@
+@if (book(); as b) {
+  <div class="modal-backdrop" (click)="onClose()">
+    <div class="modal-dialog glass-card" (click)="$event.stopPropagation()">
+      
+      <!-- Close Button -->
+      <button class="modal-close-btn" (click)="onClose()" aria-label="Close details">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="modal-content-grid">
+        
+        <!-- Book 3D Cover Column -->
+        <div class="modal-cover-col">
+          <div class="book-3d-wrap">
+            <img [src]="b.coverImage" [alt]="b.title" class="book-modal-cover">
+            <div class="book-spine-glow"></div>
+          </div>
+          <a [href]="b.amazonUrl" target="_blank" rel="noopener" class="btn btn-primary btn-amazon">
+            <i class="fa-brands fa-amazon"></i>
+            <span>Buy on Amazon</span>
+          </a>
+        </div>
+
+        <!-- Book Details Column -->
+        <div class="modal-info-col">
+          <div class="modal-header-info">
+            <span class="book-category-pill">{{ b.category }}</span>
+            @if (b.isUnveiledByVIP) {
+              <span class="vip-unveiled-tag">
+                <i class="fa-solid fa-crown"></i> Launched by Former Vice President
+              </span>
+            }
+          </div>
+
+          <h2 class="book-title">{{ b.title }}</h2>
+          <p class="book-subtitle">{{ b.subtitle }}</p>
+
+          <div class="author-meta">
+            <i class="fa-solid fa-pen-nib"></i>
+            <span>By <strong>{{ b.author }}</strong></span>
+          </div>
+
+          @if (b.vipNote) {
+            <div class="vip-callout">
+              <i class="fa-solid fa-certificate"></i>
+              <p>{{ b.vipNote }}</p>
+            </div>
+          }
+
+          <div class="book-section">
+            <h4>About the Book</h4>
+            <p class="book-desc-text">{{ b.description }}</p>
+          </div>
+
+          <div class="book-section">
+            <h4>Key Takeaways & Frameworks</h4>
+            <ul class="takeaways-list">
+              @for (point of b.keyTakeaways; track $index) {
+                <li>
+                  <i class="fa-solid fa-circle-check"></i>
+                  <span>{{ point }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <div class="book-meta-footer">
+            @if (b.pages) {
+              <div class="meta-item">
+                <span class="label">Pages</span>
+                <span class="val">{{ b.pages }}</span>
+              </div>
+            }
+            @if (b.publisher) {
+              <div class="meta-item">
+                <span class="label">Publisher</span>
+                <span class="val">{{ b.publisher }}</span>
+              </div>
+            }
+            <div class="meta-item">
+              <span class="label">Format</span>
+              <span class="val">Paperback & Kindle</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+}

@@ -1,0 +1,150 @@
+<div class="services-page-view">
+
+  <!-- =========================================================================
+       PAGE HERO BANNER
+       ========================================================================= -->
+  <section class="page-hero-banner">
+    <div class="container">
+      <div class="page-hero-content">
+        <span class="apple-badge">
+          <i class="fa-solid fa-briefcase"></i>
+          <span>Verch Consulting LLP & Advisory</span>
+        </span>
+        <h1 class="page-title"><span class="gradient-text-aurora">Strategic HR Advisory & Keynote Masterclasses</span></h1>
+        <p class="page-lead">
+          Connecting premier talent with global enterprises, designing agile organizational systems, and inspiring leaders across Fortune 500s and academic institutions.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       SERVICES FILTER & GRID
+       ========================================================================= -->
+  <section class="services-main-section">
+    <div class="container">
+      
+      <!-- Category Filter Pills -->
+      <div class="services-filter-bar">
+        @for (cat of categories; track cat) {
+          <button 
+            type="button" 
+            class="filter-pill" 
+            [class.active]="selectedCategory() === cat"
+            (click)="filterServices(cat)">
+            {{ cat }}
+          </button>
+        }
+      </div>
+
+      <!-- Services Cards Grid -->
+      <div class="services-grid">
+        @for (svc of filteredServices; track svc.id) {
+          <div class="glass-card service-detail-card">
+            
+            <div class="service-card-top">
+              <div class="service-icon-box">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <span class="service-badge-pill">{{ svc.badge }}</span>
+            </div>
+
+            <div class="service-title-group">
+              <h3 class="service-card-title">{{ svc.title }}</h3>
+              <h4 class="service-card-subtitle">{{ svc.subtitle }}</h4>
+            </div>
+
+            <p class="service-card-desc">{{ svc.description }}</p>
+
+            <div class="audience-box">
+              <span class="aud-label"><i class="fa-solid fa-user-group"></i> Target Audience:</span>
+              <span class="aud-val">{{ svc.targetAudience }}</span>
+            </div>
+
+            <div class="deliverables-box">
+              <h5 class="deliv-heading">Key Capabilities & Deliverables:</h5>
+              <ul class="deliv-list">
+                @for (d of svc.keyDeliverables; track $index) {
+                  <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>{{ d }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <div class="service-card-bottom">
+              <a routerLink="/contact" class="btn btn-primary btn-block">
+                <span>Request Consultation / Proposal</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       WHY PARTNER WITH VERCH CONSULTING LLP
+       ========================================================================= -->
+  <section class="why-verch-section">
+    <div class="container">
+      
+      <div class="section-header">
+        <span class="section-tag">Institutional Advantage</span>
+        <h2><span class="gradient-text">Why Partner With Verch Consulting LLP?</span></h2>
+        <p>A proven synthesis of empirical HR research, C-suite execution, and world-record skilling impact.</p>
+      </div>
+
+      <div class="bento-grid">
+        <div class="glass-card col-4 reason-card">
+          <div class="reason-icon"><i class="fa-solid fa-brain"></i></div>
+          <h3>Doctoral-Level Rigor</h3>
+          <p>Backed by PhD research in HR Management from Andhra University, bringing science and structural precision to corporate challenges.</p>
+        </div>
+
+        <div class="glass-card col-4 reason-card">
+          <div class="reason-icon"><i class="fa-solid fa-industry"></i></div>
+          <h3>16+ Yrs IT & Pharma Pedigree</h3>
+          <p>Direct leadership experience across top pharmaceutical and technology corporations, understanding executive talent pressures firsthand.</p>
+        </div>
+
+        <div class="glass-card col-4 reason-card">
+          <div class="reason-icon"><i class="fa-solid fa-globe"></i></div>
+          <h3>3x World Records Scale</h3>
+          <p>Demonstrated capability in orchestrating massive, high-impact career transformation summits reaching 27,000+ candidates.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       BOTTOM CONSULTATION BANNER
+       ========================================================================= -->
+  <section class="services-cta-section">
+    <div class="container">
+      <div class="glass-card services-cta-card">
+        <div class="cta-content">
+          <span class="apple-badge">
+            <span class="pulse-dot"></span>
+            <span>Tailored Enterprise Solutions</span>
+          </span>
+          <h2>Ready to Transform Your Organization or Book a Keynote?</h2>
+          <p>Connect directly with Dr. Venugopal Rao's advisory desk for custom speaking engagements, C-Suite coaching, and strategic talent solutions.</p>
+          <a routerLink="/contact" class="btn btn-primary btn-lg">
+            <span>Schedule Initial Discovery Call</span>
+            <i class="fa-solid fa-calendar-check"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
