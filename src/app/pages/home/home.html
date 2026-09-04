@@ -290,6 +290,11 @@
       <div class="awards-grid">
         @for (award of awards().slice(0, 3); track award.id) {
           <div class="glass-card award-card">
+            @if (award.image) {
+              <div class="award-img-wrap" style="margin-bottom: 16px; border-radius: 12px; overflow: hidden; height: 160px;">
+                <img [src]="award.image" [alt]="award.title" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              </div>
+            }
             <div class="award-top-row">
               <div class="award-icon-box">
                 <i class="fa-solid fa-trophy"></i>

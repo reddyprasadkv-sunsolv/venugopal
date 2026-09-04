@@ -98,7 +98,8 @@ export class AdminComponent {
     year: new Date().getFullYear().toString(),
     description: '',
     iconType: 'trophy',
-    badgeColor: '#00b4d8'
+    badgeColor: '#00b4d8',
+    image: ''
   });
 
   editingPhoto = signal<GalleryPhoto | null>(null);
@@ -235,6 +236,19 @@ export class AdminComponent {
   onEditPhotoUpload(event: Event, photo: GalleryPhoto): void {
     this.readImageFile(event, (dataUrl) => {
       photo.imageUrl = dataUrl;
+    });
+  }
+
+  onNewAwardImageUpload(event: Event): void {
+    this.readImageFile(event, (dataUrl) => {
+      this.newAwardForm().image = dataUrl;
+      this.newAwardForm.set({ ...this.newAwardForm(), image: dataUrl });
+    });
+  }
+
+  onEditAwardImageUpload(event: Event, award: Award): void {
+    this.readImageFile(event, (dataUrl) => {
+      award.image = dataUrl;
     });
   }
 

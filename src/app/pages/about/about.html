@@ -173,6 +173,11 @@
             </div>
 
             <div class="glass-card timeline-card">
+              @if (award.image) {
+                <div class="t-award-img-wrap" style="margin-bottom: 14px; border-radius: 12px; overflow: hidden; max-height: 220px;">
+                  <img [src]="award.image" [alt]="award.title" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                </div>
+              }
               <div class="t-card-header">
                 <span class="t-year">{{ award.year }}</span>
                 <span class="t-conferred"><i class="fa-solid fa-building-columns"></i> {{ award.conferredBy }}</span>
