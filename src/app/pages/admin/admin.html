@@ -88,7 +88,34 @@
             [class.active]="currentTab() === 'hero'" 
             (click)="setTab('hero')">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Hero & Profile</span>
+            <span>Hero & Banner</span>
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
+            [class.active]="currentTab() === 'pillars'" 
+            (click)="setTab('pillars')">
+            <i class="fa-solid fa-compass"></i>
+            <span>Bento Pillars</span>
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
+            [class.active]="currentTab() === 'stats'" 
+            (click)="setTab('stats')">
+            <i class="fa-solid fa-chart-simple"></i>
+            <span>Metrics ({{ stats().length }})</span>
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
+            [class.active]="currentTab() === 'about'" 
+            (click)="setTab('about')">
+            <i class="fa-solid fa-user-graduate"></i>
+            <span>About & Records</span>
           </button>
 
           <button 
@@ -170,13 +197,16 @@
             <h2 class="active-tab-title">
               @switch (currentTab()) {
                 @case ('overview') { <span><i class="fa-solid fa-gauge"></i> Executive Dashboard Overview</span> }
-                @case ('hero') { <span><i class="fa-solid fa-wand-magic-sparkles"></i> Hero, Bio & Metrics Manager</span> }
+                @case ('hero') { <span><i class="fa-solid fa-wand-magic-sparkles"></i> Hero Section & Branding Manager</span> }
+                @case ('pillars') { <span><i class="fa-solid fa-compass"></i> Core Philosophy & Bento Pillars</span> }
+                @case ('stats') { <span><i class="fa-solid fa-chart-simple"></i> Impact Metrics & Statistics Counters</span> }
+                @case ('about') { <span><i class="fa-solid fa-user-graduate"></i> Executive Bio, Degrees & World Records</span> }
                 @case ('services') { <span><i class="fa-solid fa-briefcase"></i> Consulting & Services Manager</span> }
                 @case ('books') { <span><i class="fa-solid fa-book"></i> Book Library & VIP Launches</span> }
                 @case ('awards') { <span><i class="fa-solid fa-trophy"></i> Honors & Awards Timeline</span> }
                 @case ('gallery') { <span><i class="fa-solid fa-images"></i> Photography & Media Manager</span> }
                 @case ('leads') { <span><i class="fa-solid fa-inbox"></i> Speaker Inquiries & Client CRM</span> }
-                @case ('settings') { <span><i class="fa-solid fa-gear"></i> System Settings & JSON Backup</span> }
+                @case ('settings') { <span><i class="fa-solid fa-gear"></i> System Settings, Socials & Backup</span> }
               }
             </h2>
           </div>
@@ -284,8 +314,24 @@
                     <button class="quick-hub-item" (click)="setTab('hero')">
                       <i class="fa-solid fa-wand-magic-sparkles"></i>
                       <div>
-                        <strong>Update Hero Headlines & Images</strong>
-                        <span>Edit page title, subcopy, and upload new banner photos</span>
+                        <strong>Update Hero Headlines & Spotlight Image</strong>
+                        <span>Edit titles, aurora gradients, CTA links, and profile photos</span>
+                      </div>
+                    </button>
+
+                    <button class="quick-hub-item" (click)="setTab('pillars')">
+                      <i class="fa-solid fa-compass"></i>
+                      <div>
+                        <strong>Edit Core Philosophy Bento Pillars</strong>
+                        <span>Manage Who Am I, What I Do, Why I Do It, and Milestones</span>
+                      </div>
+                    </button>
+
+                    <button class="quick-hub-item" (click)="setTab('about')">
+                      <i class="fa-solid fa-user-graduate"></i>
+                      <div>
+                        <strong>Manage Academic Degrees & World Records</strong>
+                        <span>Update qualifications, Andhra University PhD, and global feats</span>
                       </div>
                     </button>
 
@@ -300,8 +346,8 @@
                     <button class="quick-hub-item" (click)="setTab('services')">
                       <i class="fa-solid fa-briefcase"></i>
                       <div>
-                        <strong>Manage Verch Consulting Services</strong>
-                        <span>Create and update corporate advisory offerings</span>
+                        <strong>Manage Verch Consulting Offerings</strong>
+                        <span>Create and update corporate advisory services</span>
                       </div>
                     </button>
 
@@ -309,7 +355,7 @@
                       <i class="fa-solid fa-file-export"></i>
                       <div>
                         <strong>Download Site Data Backup (JSON)</strong>
-                        <span>Save a full snapshot of all current site text and images</span>
+                        <span>Save a complete portable backup of all website content and media</span>
                       </div>
                     </button>
                   </div>
@@ -323,7 +369,7 @@
 
 
           <!-- ===============================================================
-               TAB 2: HERO, BIO & METRICS MANAGER
+               TAB 2: HERO & BRANDING MANAGER
                =============================================================== -->
           @if (currentTab() === 'hero') {
             <div class="hero-manager-tab">
@@ -333,7 +379,7 @@
                 <!-- Hero Section Editor -->
                 <div class="glass-card admin-form-card">
                   <div class="card-box-header">
-                    <h3>Hero Section Content</h3>
+                    <h3>Hero Headlines & Badges</h3>
                     <button class="btn btn-sm btn-primary" (click)="saveHero()">Save Hero Changes</button>
                   </div>
 
@@ -363,15 +409,45 @@
                     <textarea [(ngModel)]="heroForm().subtitle" rows="3" class="form-textarea"></textarea>
                   </div>
 
-                  <!-- Hero Image Editor -->
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Primary Button Text</label>
+                      <input type="text" [(ngModel)]="heroForm().primaryCtaText" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Primary Button Link</label>
+                      <input type="text" [(ngModel)]="heroForm().primaryCtaLink" class="form-input">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Secondary Button Text</label>
+                      <input type="text" [(ngModel)]="heroForm().secondaryCtaText" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Secondary Button Link</label>
+                      <input type="text" [(ngModel)]="heroForm().secondaryCtaLink" class="form-input">
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Hero Spotlight Image -->
+                <div class="glass-card admin-form-card">
+                  <div class="card-box-header">
+                    <h3>Author Spotlight Image</h3>
+                    <button class="btn btn-sm btn-primary" (click)="saveHero()">Save Image Changes</button>
+                  </div>
+
                   <div class="form-group image-upload-group">
                     <label class="img-label">
-                      <span>Hero / Author Spotlight Image</span>
+                      <span>Hero Spotlight Image</span>
                       <span class="dimension-badge"><i class="fa-solid fa-ruler-combined"></i> 800 × 1000 px (4:5 Portrait)</span>
                     </label>
                     <p class="img-dimension-hint">Recommended dimensions: <strong>800px width × 1000px height</strong> (min. 600 × 750px, JPG/PNG/WebP).</p>
                     <div class="img-preview-row">
-                      <img [src]="heroForm().heroImage" alt="Hero Preview" class="admin-img-thumb">
+                      <img [src]="heroForm().heroImage" alt="Hero Preview" class="admin-img-thumb" style="width: 140px; height: 175px; object-fit: cover;">
                       <div class="img-ctrls">
                         <input type="text" [(ngModel)]="heroForm().heroImage" placeholder="Image URL (e.g. images/author/...)" class="form-input">
                         <label class="btn btn-sm btn-secondary file-upload-btn">
@@ -382,23 +458,188 @@
                     </div>
                   </div>
 
+                  <div class="hero-live-preview-box">
+                    <h4>Live Text Preview</h4>
+                    <div class="preview-hero-rendered">
+                      <span class="section-tag">{{ heroForm().badge }}</span>
+                      <h2 style="margin: 10px 0; font-size: 1.4rem;">
+                        {{ heroForm().titlePrefix }} <span class="gradient-text">{{ heroForm().titleHighlight }}</span> {{ heroForm().titleSuffix }}
+                      </h2>
+                      <p style="font-size: 0.88rem; color: var(--text-dim); line-height: 1.5;">{{ heroForm().subtitle }}</p>
+                    </div>
+                  </div>
+
                 </div>
 
-                <!-- Executive Bio & Profile Editor -->
+              </div>
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB 3: CORE PHILOSOPHY & BENTO PILLARS
+               =============================================================== -->
+          @if (currentTab() === 'pillars') {
+            <div class="pillars-manager-tab">
+              
+              <div class="tab-action-bar">
+                <div>
+                  <h3>Core Philosophy Bento Pillars ("Make Something Different!")</h3>
+                  <p style="color: var(--text-dim); font-size: 0.88rem;">Manage the 4 executive pillar cards featured on the Home page.</p>
+                </div>
+                <button class="btn btn-primary" (click)="savePillars()">
+                  <i class="fa-solid fa-floppy-disk"></i> Save Bento Pillars
+                </button>
+              </div>
+
+              <div class="pillars-edit-grid">
+                @for (p of pillarsForm(); track p.id; let idx = $index) {
+                  <div class="glass-card pillar-edit-card">
+                    <div class="pillar-edit-header">
+                      <span class="pillar-edit-num">0{{ idx + 1 }}</span>
+                      <div class="form-group" style="margin: 0; flex-grow: 1;">
+                        <label>Category Tag</label>
+                        <input type="text" [(ngModel)]="p.tag" placeholder="e.g. Credentials, Mission..." class="form-input">
+                      </div>
+                    </div>
+
+                    <div class="form-row" style="margin-top: 12px;">
+                      <div class="form-group">
+                        <label>Question / Title</label>
+                        <input type="text" [(ngModel)]="p.title" placeholder="e.g. Who Am I?" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Role / Subtitle</label>
+                        <input type="text" [(ngModel)]="p.subtitle" placeholder="e.g. Educator, Scholar & Visionary" class="form-input">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Description Narrative</label>
+                      <textarea [(ngModel)]="p.description" rows="3" class="form-textarea"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Button Action Text</label>
+                        <input type="text" [(ngModel)]="p.linkText" placeholder="e.g. Read Full Biography" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Button Route Link</label>
+                        <input type="text" [(ngModel)]="p.linkUrl" placeholder="e.g. /about-me" class="form-input">
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB 4: IMPACT METRICS & STATISTICS
+               =============================================================== -->
+          @if (currentTab() === 'stats') {
+            <div class="stats-manager-tab">
+              
+              <div class="tab-action-bar">
+                <div>
+                  <h3>Impact Statistics & Counter Metrics ({{ statsForm().length }})</h3>
+                  <p style="color: var(--text-dim); font-size: 0.88rem;">Manage live animated numerical counters across Home and About pages.</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                  <button class="btn btn-secondary" (click)="addStat()">
+                    <i class="fa-solid fa-plus"></i> Add New Metric
+                  </button>
+                  <button class="btn btn-primary" (click)="saveStats()">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Metrics
+                  </button>
+                </div>
+              </div>
+
+              <div class="stats-edit-grid">
+                @for (st of statsForm(); track st.id; let idx = $index) {
+                  <div class="glass-card stat-edit-card">
+                    <div class="stat-card-header">
+                      <span class="stat-badge-idx">#{{ idx + 1 }}</span>
+                      <button class="btn-icon-action delete-act" (click)="removeStat(idx)" title="Remove Metric">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                    
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Number Value</label>
+                        <input type="number" [(ngModel)]="st.value" class="form-input">
+                      </div>
+                      <div class="form-group">
+                        <label>Suffix (+, %, etc.)</label>
+                        <input type="text" [(ngModel)]="st.suffix" class="form-input">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Metric Label</label>
+                      <input type="text" [(ngModel)]="st.label" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Impact Description</label>
+                      <input type="text" [(ngModel)]="st.description" class="form-input">
+                    </div>
+                  </div>
+                }
+              </div>
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB 5: ABOUT, ACADEMIC DEGREES & WORLD RECORDS
+               =============================================================== -->
+          @if (currentTab() === 'about') {
+            <div class="about-manager-tab">
+              
+              <div class="tab-action-bar">
+                <div>
+                  <h3>Executive Biography, Academic Degrees & World Records</h3>
+                  <p style="color: var(--text-dim); font-size: 0.88rem;">Manage author narrative, Andhra University degrees, and global record citations.</p>
+                </div>
+                <button class="btn btn-primary" (click)="saveProfile()">
+                  <i class="fa-solid fa-floppy-disk"></i> Save All About Changes
+                </button>
+              </div>
+
+              <div class="admin-panel-grid">
+                
+                <!-- Section 1: Executive Bio & Identity -->
                 <div class="glass-card admin-form-card">
                   <div class="card-box-header">
-                    <h3>Executive Bio & Credentials</h3>
-                    <button class="btn btn-sm btn-primary" (click)="saveProfile()">Save Bio Changes</button>
+                    <h3>Executive Bio & Details</h3>
                   </div>
 
                   <div class="form-group">
-                    <label>Full Author Name</label>
+                    <label>Full Name & Salutation</label>
                     <input type="text" [(ngModel)]="profileForm().name" class="form-input">
                   </div>
 
                   <div class="form-group">
-                    <label>Professional Title Line</label>
+                    <label>Professional Title</label>
                     <input type="text" [(ngModel)]="profileForm().title" class="form-input">
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Primary Organization</label>
+                      <input type="text" [(ngModel)]="profileForm().organization" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Years Experience</label>
+                      <input type="number" [(ngModel)]="profileForm().experienceYears" class="form-input">
+                    </div>
                   </div>
 
                   <div class="form-group">
@@ -406,55 +647,116 @@
                     <input type="text" [(ngModel)]="profileForm().tagline" class="form-input">
                   </div>
 
-                  <div class="form-group">
-                    <label>Biography Paragraph 1</label>
-                    <textarea [(ngModel)]="profileForm().bioParagraphs[0]" rows="3" class="form-textarea"></textarea>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Biography Paragraph 2</label>
-                    <textarea [(ngModel)]="profileForm().bioParagraphs[1]" rows="3" class="form-textarea"></textarea>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Biography Paragraph 3</label>
-                    <textarea [(ngModel)]="profileForm().bioParagraphs[2]" rows="3" class="form-textarea"></textarea>
-                  </div>
-
-                </div>
-
-              </div>
-
-              <!-- Stats Metrics Counters Editor -->
-              <div class="glass-card admin-form-card stats-manager-box">
-                <div class="card-box-header">
-                  <h3>Metrics & Statistics Counters</h3>
-                  <button class="btn btn-sm btn-primary" (click)="saveStats()">Save Metrics</button>
-                </div>
-
-                <div class="stats-edit-grid">
-                  @for (st of statsForm(); track st.id; let idx = $index) {
-                    <div class="stat-edit-card">
-                      <div class="form-row">
-                        <div class="form-group">
-                          <label>Number Value</label>
-                          <input type="number" [(ngModel)]="st.value" class="form-input">
-                        </div>
-                        <div class="form-group">
-                          <label>Suffix (+, %, etc.)</label>
-                          <input type="text" [(ngModel)]="st.suffix" class="form-input">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label>Label</label>
-                        <input type="text" [(ngModel)]="st.label" class="form-input">
-                      </div>
-                      <div class="form-group">
-                        <label>Description</label>
-                        <input type="text" [(ngModel)]="st.description" class="form-input">
+                  <!-- Profile Portrait Image -->
+                  <div class="form-group image-upload-group">
+                    <label class="img-label">
+                      <span>Biography Portrait Image</span>
+                      <span class="dimension-badge"><i class="fa-solid fa-ruler-combined"></i> 800 × 1000 px (4:5 Portrait)</span>
+                    </label>
+                    <div class="img-preview-row">
+                      <img [src]="profileForm().profileImage" alt="Bio Preview" class="admin-img-thumb" style="width: 100px; height: 125px; object-fit: cover;">
+                      <div class="img-ctrls">
+                        <input type="text" [(ngModel)]="profileForm().profileImage" class="form-input">
+                        <label class="btn btn-sm btn-secondary file-upload-btn">
+                          <i class="fa-solid fa-upload"></i> Upload Photo
+                          <input type="file" accept="image/*" (change)="onProfileImageUpload($event)" style="display: none;">
+                        </label>
                       </div>
                     </div>
-                  }
+                  </div>
+
+                  <!-- Bio Paragraphs dynamic list -->
+                  <div class="dynamic-list-box">
+                    <div class="dynamic-header">
+                      <label>Biography Narrative Paragraphs ({{ profileForm().bioParagraphs.length }})</label>
+                      <button type="button" class="btn btn-sm btn-secondary" (click)="addBioParagraph()">
+                        <i class="fa-solid fa-plus"></i> Add Paragraph
+                      </button>
+                    </div>
+
+                    @for (p of profileForm().bioParagraphs; track $index; let pIdx = $index) {
+                      <div class="dynamic-item-row">
+                        <textarea [(ngModel)]="profileForm().bioParagraphs[pIdx]" rows="3" class="form-textarea" placeholder="Enter narrative paragraph..."></textarea>
+                        <button class="btn-icon-action delete-act" (click)="removeBioParagraph(pIdx)" title="Remove Paragraph">
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
+                    }
+                  </div>
+
+                </div>
+
+                <!-- Section 2: Academic Degrees & World Records -->
+                <div class="glass-card admin-form-card">
+                  
+                  <!-- Academic Qualifications -->
+                  <div class="card-box-header">
+                    <h3>Academic Qualifications & Degrees ({{ profileForm().education.length }})</h3>
+                    <button type="button" class="btn btn-sm btn-secondary" (click)="addDegree()">
+                      <i class="fa-solid fa-plus"></i> Add Degree
+                    </button>
+                  </div>
+
+                  <div class="degrees-edit-list">
+                    @for (edu of profileForm().education; track $index; let eIdx = $index) {
+                      <div class="glass-card degree-edit-card">
+                        <div class="degree-card-header">
+                          <strong style="color: var(--c-blue-ocean);"><i class="fa-solid fa-graduation-cap"></i> Degree #{{ eIdx + 1 }}</strong>
+                          <button class="btn-icon-action delete-act" (click)="removeDegree(eIdx)" title="Remove Degree">
+                            <i class="fa-solid fa-trash"></i>
+                          </button>
+                        </div>
+                        <div class="form-group">
+                          <label>Degree Title</label>
+                          <input type="text" [(ngModel)]="edu.degree" class="form-input">
+                        </div>
+                        <div class="form-group">
+                          <label>University / Institution</label>
+                          <input type="text" [(ngModel)]="edu.institution" class="form-input">
+                        </div>
+                        <div class="form-group">
+                          <label>Specialization / Description</label>
+                          <input type="text" [(ngModel)]="edu.description" class="form-input">
+                        </div>
+                      </div>
+                    }
+                  </div>
+
+                  <!-- World Records List -->
+                  <div class="card-box-header" style="margin-top: 24px;">
+                    <h3>World Records Achievements ({{ profileForm().worldRecords.length }})</h3>
+                    <button type="button" class="btn btn-sm btn-secondary" (click)="addWorldRecord()">
+                      <i class="fa-solid fa-plus"></i> Add Record
+                    </button>
+                  </div>
+
+                  <div class="records-edit-list">
+                    @for (rec of profileForm().worldRecords; track $index; let rIdx = $index) {
+                      <div class="glass-card record-edit-card">
+                        <div class="record-card-header">
+                          <strong style="color: #b48200;"><i class="fa-solid fa-trophy"></i> Record #{{ rIdx + 1 }}</strong>
+                          <button class="btn-icon-action delete-act" (click)="removeWorldRecord(rIdx)" title="Remove Record">
+                            <i class="fa-solid fa-trash"></i>
+                          </button>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group">
+                            <label>Record Book</label>
+                            <input type="text" [(ngModel)]="rec.recordBook" class="form-input">
+                          </div>
+                          <div class="form-group">
+                            <label>Year</label>
+                            <input type="text" [(ngModel)]="rec.year" class="form-input">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label>Achievement Citation</label>
+                          <input type="text" [(ngModel)]="rec.achievement" class="form-input">
+                        </div>
+                      </div>
+                    }
+                  </div>
+
                 </div>
 
               </div>
@@ -1124,14 +1426,26 @@
                     <button class="btn btn-sm btn-primary" (click)="saveSettings()">Save Settings</button>
                   </div>
 
-                  <div class="form-group">
-                    <label>Official Email</label>
-                    <input type="email" [(ngModel)]="settingsForm().email" class="form-input">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Site Name</label>
+                      <input type="text" [(ngModel)]="settingsForm().siteName" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Site Tagline</label>
+                      <input type="text" [(ngModel)]="settingsForm().tagline" class="form-input">
+                    </div>
                   </div>
 
-                  <div class="form-group">
-                    <label>Direct Phone</label>
-                    <input type="text" [(ngModel)]="settingsForm().phone" class="form-input">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Official Email</label>
+                      <input type="email" [(ngModel)]="settingsForm().email" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Direct Phone</label>
+                      <input type="text" [(ngModel)]="settingsForm().phone" class="form-input">
+                    </div>
                   </div>
 
                   <div class="form-group">
@@ -1139,19 +1453,42 @@
                     <input type="text" [(ngModel)]="settingsForm().address" class="form-input">
                   </div>
 
-                  <div class="form-group">
-                    <label>WhatsApp Link</label>
-                    <input type="text" [(ngModel)]="settingsForm().socials.whatsapp" class="form-input">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label><i class="fa-brands fa-linkedin"></i> LinkedIn URL</label>
+                      <input type="text" [(ngModel)]="settingsForm().socials.linkedin" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label><i class="fa-brands fa-youtube"></i> YouTube Channel</label>
+                      <input type="text" [(ngModel)]="settingsForm().socials.youtube" class="form-input">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label><i class="fa-brands fa-whatsapp"></i> WhatsApp Number/Link</label>
+                      <input type="text" [(ngModel)]="settingsForm().socials.whatsapp" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label><i class="fa-brands fa-x-twitter"></i> Twitter / X URL</label>
+                      <input type="text" [(ngModel)]="settingsForm().socials.twitter" class="form-input">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label><i class="fa-brands fa-instagram"></i> Instagram Profile</label>
+                      <input type="text" [(ngModel)]="settingsForm().socials.instagram" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label><i class="fa-brands fa-facebook"></i> Facebook Page</label>
+                      <input type="text" [(ngModel)]="settingsForm().socials.facebook" class="form-input">
+                    </div>
                   </div>
 
                   <div class="form-group">
-                    <label>LinkedIn URL</label>
-                    <input type="text" [(ngModel)]="settingsForm().socials.linkedin" class="form-input">
-                  </div>
-
-                  <div class="form-group">
-                    <label>YouTube Channel</label>
-                    <input type="text" [(ngModel)]="settingsForm().socials.youtube" class="form-input">
+                    <label>Footer Copyright Text</label>
+                    <input type="text" [(ngModel)]="settingsForm().copyrightText" class="form-input">
                   </div>
                 </div>
 

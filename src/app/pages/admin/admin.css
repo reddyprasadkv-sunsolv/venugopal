@@ -728,11 +728,11 @@
 .stats-edit-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: 20px;
 }
 
 .stat-edit-card {
-  padding: 20px;
+  padding: 22px;
   border-radius: var(--radius-lg);
   background: rgba(240, 247, 252, 0.85);
   border: 1.5px solid rgba(0, 119, 182, 0.18);
@@ -741,8 +741,133 @@
   gap: 14px;
 }
 
+.stat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-badge-idx {
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 119, 182, 0.12);
+  color: var(--c-blue-ocean);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
 .stat-edit-card .form-group {
   margin-bottom: 0;
+}
+
+/* Bento Pillars Manager */
+.pillars-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.pillar-edit-card {
+  padding: 28px;
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1.5px solid rgba(0, 180, 216, 0.22);
+}
+
+.pillar-edit-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pillar-edit-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.15), rgba(0, 119, 182, 0.1));
+  border: 1px solid rgba(0, 180, 216, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--c-blue-ocean);
+  flex-shrink: 0;
+}
+
+/* Dynamic List Box for Bio Paragraphs */
+.dynamic-list-box {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.dynamic-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dynamic-header label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0;
+}
+
+.dynamic-item-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.dynamic-item-row textarea {
+  flex: 1;
+}
+
+/* Degrees & World Records Edit Lists */
+.degrees-edit-list, .records-edit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.degree-edit-card, .record-edit-card {
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(246, 250, 254, 0.9);
+  border: 1px solid rgba(0, 119, 182, 0.16);
+}
+
+.degree-card-header, .record-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.hero-live-preview-box {
+  margin-top: 16px;
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  background: rgba(240, 247, 252, 0.7);
+  border: 1px solid rgba(0, 119, 182, 0.15);
+}
+
+.hero-live-preview-box h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
 }
 
 /* Admin Items Grid */

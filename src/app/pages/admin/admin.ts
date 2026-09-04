@@ -8,6 +8,7 @@ import {
   HeroData,
   AuthorProfile,
   StatMetric,
+  BentoPillar,
   Book,
   Award,
   ServiceItem,
@@ -16,7 +17,18 @@ import {
   SiteSettings
 } from '../../models/content.models';
 
-type AdminTab = 'overview' | 'hero' | 'services' | 'books' | 'awards' | 'gallery' | 'leads' | 'settings';
+export type AdminTab = 
+  | 'overview' 
+  | 'hero' 
+  | 'pillars' 
+  | 'stats' 
+  | 'about' 
+  | 'services' 
+  | 'books' 
+  | 'awards' 
+  | 'gallery' 
+  | 'leads' 
+  | 'settings';
 
 @Component({
   selector: 'app-admin',
@@ -34,6 +46,7 @@ export class AdminComponent {
   readonly hero = this.dataService.hero;
   readonly profile = this.dataService.profile;
   readonly stats = this.dataService.stats;
+  readonly bentoPillars = this.dataService.bentoPillars;
   readonly books = this.dataService.books;
   readonly services = this.dataService.services;
   readonly awards = this.dataService.awards;
@@ -54,9 +67,10 @@ export class AdminComponent {
 
   // Form State Clones for Editing
   heroForm = signal<HeroData>({ ...this.hero() });
-  profileForm = signal<AuthorProfile>({ ...this.profile() });
-  settingsForm = signal<SiteSettings>({ ...this.settings() });
+  profileForm = signal<AuthorProfile>(JSON.parse(JSON.stringify(this.profile())));
+  pillarsForm = signal<BentoPillar[]>(JSON.parse(JSON.stringify(this.bentoPillars())));
   statsForm = signal<StatMetric[]>(JSON.parse(JSON.stringify(this.stats())));
+  settingsForm = signal<SiteSettings>(JSON.parse(JSON.stringify(this.settings())));
 
   // Modal / Inline Edit States for CRUD
   editingBook = signal<Book | null>(null);
@@ -122,6 +136,7 @@ export class AdminComponent {
     // Refresh cloned models from signal
     this.heroForm.set({ ...this.hero() });
     this.profileForm.set(JSON.parse(JSON.stringify(this.profile())));
+    this.pillarsForm.set(JSON.parse(JSON.stringify(this.bentoPillars())));
     this.settingsForm.set(JSON.parse(JSON.stringify(this.settings())));
     this.statsForm.set(JSON.parse(JSON.stringify(this.stats())));
   }
@@ -169,17 +184,76 @@ export class AdminComponent {
 
   saveProfile(): void {
     this.dataService.updateProfile(this.profileForm());
-    this.showToast('Executive profile & bio updated!');
+    this.showToast('Executive profile, degrees & records updated!');
+  }
+
+  savePillars(): void {
+    this.dataService.updateBentoPillars(this.pillarsForm());
+    this.showToast('Core Philosophy Bento Pillars updated!');
   }
 
   saveStats(): void {
     this.dataService.updateStats(this.statsForm());
-    this.showToast('Metrics counters updated!');
+    this.showToast('Impact metrics counters updated!');
   }
 
   saveSettings(): void {
     this.dataService.updateSettings(this.settingsForm());
-    this.showToast('Site settings & socials updated!');
+    this.showToast('Site settings, contact & socials updated!');
+  }
+
+  // Helper actions for dynamic arrays in About / Profile
+  addDegree(): void {
+    this.profileForm().education.push({
+      degree: 'Degree Title (e.g. MBA / PhD / PostDoc)',
+      institution: 'University / Board Name',
+      description: 'Key academic focus or specialization'
+    });
+  }
+
+  removeDegree(idx: number): void {
+    this.profileForm().education.splice(idx, 1);
+  }
+
+  addWorldRecord(): void {
+    this.profileForm().worldRecords.push({
+      recordBook: 'Record Book Name (e.g. London Book of World Records)',
+      achievement: 'Record citation and accomplishment details',
+      year: new Date().getFullYear().toString()
+    });
+  }
+
+  removeWorldRecord(idx: number): void {
+    this.profileForm().worldRecords.splice(idx, 1);
+  }
+
+  addBioParagraph(): void {
+    this.profileForm().bioParagraphs.push('New biography paragraph text...');
+  }
+
+  removeBioParagraph(idx: number): void {
+    this.profileForm().bioParagraphs.splice(idx, 1);
+  }
+
+  addStat(): void {
+    this.statsForm().push({
+      id: 'stat-' + Date.now(),
+      label: 'New Metric Label',
+      value: 100,
+      suffix: '+',
+      description: 'Impact description'
+    });
+  }
+
+  removeStat(idx: number): void {
+    this.statsForm().splice(idx, 1);
+  }
+
+  onProfileImageUpload(event: Event): void {
+    this.readImageFile(event, (dataUrl) => {
+      this.profileForm().profileImage = dataUrl;
+      this.profileForm.set({ ...this.profileForm(), profileImage: dataUrl });
+    });
   }
 
   // Image Upload helpers (converts file to data URL and binds safely)
