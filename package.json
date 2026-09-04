@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:gh-pages": "ng build --base-href /venugopal/",
+    "build:gh-pages": "ng build --base-href /venugopal/ && node scripts/prepare-gh-pages.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

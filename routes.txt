@@ -1,0 +1,7 @@
+/
+/about-me
+/services
+/my-books
+/photography
+/contact
+/admin
