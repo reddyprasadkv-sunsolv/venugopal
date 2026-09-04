@@ -376,7 +376,7 @@
                         <input type="text" [(ngModel)]="heroForm().heroImage" placeholder="Image URL (e.g. images/author/...)" class="form-input">
                         <label class="btn btn-sm btn-secondary file-upload-btn">
                           <i class="fa-solid fa-upload"></i> Upload Image File
-                          <input type="file" accept="image/*" (change)="handleImageUpload($event, heroForm().heroImage = $any($event))" style="display: none;">
+                          <input type="file" accept="image/*" (change)="onHeroImageUpload($event)" style="display: none;">
                         </label>
                       </div>
                     </div>
@@ -614,7 +614,7 @@
                           <input type="text" [(ngModel)]="newBookForm().coverImage" placeholder="Image URL (e.g. images/books/...)" class="form-input">
                           <label class="btn btn-sm btn-secondary file-upload-btn">
                             <i class="fa-solid fa-upload"></i> Upload Cover
-                            <input type="file" accept="image/*" (change)="handleImageUpload($event, newBookForm().coverImage = $any($event))" style="display: none;">
+                            <input type="file" accept="image/*" (change)="onNewBookCoverUpload($event)" style="display: none;">
                           </label>
                         </div>
                       </div>
@@ -681,7 +681,7 @@
                           <input type="text" [(ngModel)]="book.coverImage" class="form-input">
                           <label class="btn btn-sm btn-secondary file-upload-btn">
                             <i class="fa-solid fa-upload"></i> Upload Cover
-                            <input type="file" accept="image/*" (change)="handleImageUpload($event, book.coverImage = $any($event))" style="display: none;">
+                            <input type="file" accept="image/*" (change)="onEditBookCoverUpload($event, book)" style="display: none;">
                           </label>
                         </div>
                       </div>
@@ -884,7 +884,7 @@
                           <input type="text" [(ngModel)]="newPhotoForm().imageUrl" class="form-input">
                           <label class="btn btn-sm btn-secondary file-upload-btn">
                             <i class="fa-solid fa-upload"></i> Upload Image
-                            <input type="file" accept="image/*" (change)="handleImageUpload($event, newPhotoForm().imageUrl = $any($event))" style="display: none;">
+                            <input type="file" accept="image/*" (change)="onNewPhotoUpload($event)" style="display: none;">
                           </label>
                         </div>
                       </div>
@@ -936,7 +936,7 @@
                           <input type="text" [(ngModel)]="photo.imageUrl" class="form-input">
                           <label class="btn btn-sm btn-secondary file-upload-btn">
                             <i class="fa-solid fa-upload"></i> Upload Image
-                            <input type="file" accept="image/*" (change)="handleImageUpload($event, photo.imageUrl = $any($event))" style="display: none;">
+                            <input type="file" accept="image/*" (change)="onEditPhotoUpload($event, photo)" style="display: none;">
                           </label>
                         </div>
                       </div>

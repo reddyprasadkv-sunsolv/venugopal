@@ -181,19 +181,61 @@ export class AdminComponent {
     this.showToast('Site settings & socials updated!');
   }
 
-  // Image Upload helper (converts file to data URL)
-  handleImageUpload(event: Event, targetCallback: (dataUrl: string) => void): void {
+  // Image Upload helpers (converts file to data URL and binds safely)
+  readImageFile(event: Event, callback: (dataUrl: string) => void): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
+      const file = input.files[0];
+      if (file.size > 20 * 1024 * 1024) {
+        this.showToast('Image size should be less than 20MB', 'error');
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target?.result) {
-          targetCallback(e.target.result as string);
+          callback(e.target.result as string);
           this.showToast('Image uploaded and preview updated!');
+          input.value = '';
         }
       };
-      reader.readAsDataURL(input.files[0]);
+      reader.onerror = () => {
+        this.showToast('Failed to read image file', 'error');
+      };
+      reader.readAsDataURL(file);
     }
+  }
+
+  onHeroImageUpload(event: Event): void {
+    this.readImageFile(event, (dataUrl) => {
+      this.heroForm().heroImage = dataUrl;
+      this.heroForm.set({ ...this.heroForm(), heroImage: dataUrl });
+    });
+  }
+
+  onNewBookCoverUpload(event: Event): void {
+    this.readImageFile(event, (dataUrl) => {
+      this.newBookForm().coverImage = dataUrl;
+      this.newBookForm.set({ ...this.newBookForm(), coverImage: dataUrl });
+    });
+  }
+
+  onEditBookCoverUpload(event: Event, book: Book): void {
+    this.readImageFile(event, (dataUrl) => {
+      book.coverImage = dataUrl;
+    });
+  }
+
+  onNewPhotoUpload(event: Event): void {
+    this.readImageFile(event, (dataUrl) => {
+      this.newPhotoForm().imageUrl = dataUrl;
+      this.newPhotoForm.set({ ...this.newPhotoForm(), imageUrl: dataUrl });
+    });
+  }
+
+  onEditPhotoUpload(event: Event, photo: GalleryPhoto): void {
+    this.readImageFile(event, (dataUrl) => {
+      photo.imageUrl = dataUrl;
+    });
   }
 
   // Books CRUD
