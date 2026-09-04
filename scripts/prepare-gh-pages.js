@@ -17,7 +17,7 @@ if (targetDirs.length === 0) {
   process.exit(1);
 }
 
-const routes = ['about-me', 'services', 'my-books', 'photography', 'contact', 'admin'];
+const routes = ['about-me', 'services', 'my-books', 'photography', 'contact', 'admin', 'crm'];
 
 for (const dir of targetDirs) {
   const indexContent = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');

@@ -22,6 +22,13 @@ export class NavbarComponent {
     this.isScrolled.set(window.scrollY > 20);
   }
 
+  @HostListener('document:keydown.escape')
+  handleEscape(): void {
+    if (this.mobileMenuOpen()) {
+      this.closeMobileMenu();
+    }
+  }
+
   toggleMobileMenu(): void {
     this.mobileMenuOpen.update(v => !v);
   }

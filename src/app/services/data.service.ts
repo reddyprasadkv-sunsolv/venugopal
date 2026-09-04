@@ -364,9 +364,10 @@ const DEFAULT_DATA: SiteData = {
     {
       id: 'award-2',
       title: 'Business Excellence Award',
-      conferredBy: 'Shri Biswa Bhusan Harichandan, Hon\'ble Governor of Andhra Pradesh',
-      year: '2023',
+      conferredBy: 'Hon\'ble Governor Shri Shiv Pratap Shukla',
+      year: '2026',
       description: 'Awarded for stellar corporate advisory, entrepreneurial leadership through Verch Consulting LLP, and outstanding youth skilling.',
+      image: 'images/gallery/governor-business-excellence.jpg',
       iconType: 'award',
       badgeColor: '#90e0ef'
     },
@@ -385,6 +386,7 @@ const DEFAULT_DATA: SiteData = {
       conferredBy: 'Shri M. Venkaiah Naidu Garu, Former Vice President of India',
       year: '2023',
       description: 'Prestigious ceremonial launch of Beyond Bossing, Campus to Corporate Connect, and Coaching & Mentoring at official vice-presidential forum.',
+      image: 'images/gallery/venkaiah-naidu-book-launch.jpg',
       iconType: 'book-open',
       badgeColor: '#caf0f8'
     },
@@ -665,6 +667,27 @@ export class DataService {
         if (settings.copyrightText?.includes('Designed with Apple Intelligence Precision')) {
           settings.copyrightText = DEFAULT_DATA.settings.copyrightText;
         }
+        // Deep merge gallery to guarantee latest authentic images from code
+        const mergedGallery = DEFAULT_DATA.gallery.map(defPhoto => {
+          const userPhoto = (parsed.gallery || []).find((p: GalleryPhoto) => p.id === defPhoto.id);
+          if (!userPhoto) return defPhoto;
+          if (defPhoto.id === 'gal-2') userPhoto.imageUrl = defPhoto.imageUrl;
+          if (defPhoto.id === 'gal-3') {
+            userPhoto.imageUrl = defPhoto.imageUrl;
+            userPhoto.caption = defPhoto.caption;
+            userPhoto.location = defPhoto.location;
+            userPhoto.year = defPhoto.year;
+          }
+          return { ...defPhoto, ...userPhoto };
+        });
+
+        // Deep merge awards to guarantee latest images from code
+        const mergedAwards = DEFAULT_DATA.awards.map(defAward => {
+          const userAward = (parsed.awards || []).find((a: Award) => a.id === defAward.id);
+          if (!userAward) return defAward;
+          return { ...defAward, ...userAward };
+        });
+
         // Ensure structure completeness
         return {
           hero: { ...DEFAULT_DATA.hero, ...(parsed.hero || {}) },
@@ -673,9 +696,9 @@ export class DataService {
           bentoPillars: parsed.bentoPillars?.length ? parsed.bentoPillars : DEFAULT_DATA.bentoPillars,
           featuredVideo: { ...DEFAULT_DATA.featuredVideo, ...(parsed.featuredVideo || {}) },
           books: parsed.books?.length ? parsed.books : DEFAULT_DATA.books,
-          awards: parsed.awards?.length ? parsed.awards : DEFAULT_DATA.awards,
+          awards: mergedAwards,
           services: parsed.services?.length ? parsed.services : DEFAULT_DATA.services,
-          gallery: parsed.gallery?.length ? parsed.gallery : DEFAULT_DATA.gallery,
+          gallery: mergedGallery,
           leads: parsed.leads ? parsed.leads : DEFAULT_DATA.leads,
           settings
         };

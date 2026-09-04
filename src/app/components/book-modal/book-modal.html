@@ -1,10 +1,10 @@
 @if (book(); as b) {
-  <div class="modal-backdrop" (click)="onClose()">
+  <div class="modal-backdrop" (click)="onBackdropClick($event)">
     <div class="modal-dialog glass-card" (click)="$event.stopPropagation()">
       
       <!-- Close Button -->
-      <button class="modal-close-btn" (click)="onClose()" aria-label="Close details">
-        <i class="fa-solid fa-xmark"></i>
+      <button type="button" class="modal-close-btn" (click)="onClose($event)" aria-label="Close details" title="Close (Esc)">
+        <i class="fa-solid fa-xmark" style="pointer-events: none;"></i>
       </button>
 
       <div class="modal-content-grid">
