@@ -501,7 +501,7 @@ const DEFAULT_DATA: SiteData = {
       id: 'gal-2',
       title: 'Ceremonial Book Unveiling',
       category: 'Dignitaries',
-      imageUrl: 'images/ad.jpg',
+      imageUrl: 'images/gallery/venkaiah-naidu-book-launch.jpg',
       caption: 'Hon\'ble Former Vice President of India, Shri M. Venkaiah Naidu Garu launching three landmark books by Dr. Venugopal Rao.',
       location: 'Hyderabad',
       year: '2023',
