@@ -53,6 +53,7 @@
           <li><a routerLink="/photography"><i class="fa-solid fa-angle-right"></i> Photo Gallery</a></li>
           <li><a routerLink="/contact"><i class="fa-solid fa-angle-right"></i> Speaker Invitation</a></li>
           <li><a routerLink="/admin" style="opacity: 0.75;"><i class="fa-solid fa-shield-halved"></i> CRM Studio</a></li>
+          <li><button (click)="clearCache()" style="background: none; border: none; padding: 0; color: inherit; font: inherit; cursor: pointer; opacity: 0.65; display: inline-flex; align-items: center; gap: 0.4rem; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.65'" title="Clear local site cache and refresh to latest version"><i class="fa-solid fa-arrows-rotate"></i> Refresh Cache</button></li>
         </ul>
       </div>
 

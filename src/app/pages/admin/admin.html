@@ -226,6 +226,10 @@
               <span class="pulse-dot"></span>
               <span>Live Reactive Sync Active</span>
             </span>
+            <button type="button" class="btn btn-sm btn-outline" (click)="clearCache()" title="Clear local browser cache and reload fresh data" style="border: 1px solid rgba(0, 102, 204, 0.3); background: rgba(255, 255, 255, 0.8); color: var(--color-accent); font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.85rem; border-radius: 8px; cursor: pointer;">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span>Refresh Cache</span>
+            </button>
             <a routerLink="/" target="_blank" class="btn btn-sm btn-secondary">
               <i class="fa-solid fa-globe"></i>
               <span>Preview Site</span>

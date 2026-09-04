@@ -14,4 +14,10 @@ export class FooterComponent {
   private dataService = inject(DataService);
   readonly settings = this.dataService.settings;
   readonly books = this.dataService.books;
+
+  clearCache(): void {
+    if (confirm('Clear local site cache and reload the latest version?')) {
+      this.dataService.clearAllCache();
+    }
+  }
 }

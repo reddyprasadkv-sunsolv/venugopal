@@ -577,4 +577,10 @@ export class AdminComponent {
       this.showToast('Site content reset to default successfully!');
     }
   }
+
+  clearCache(): void {
+    if (confirm('Clear local browser cache and reload fresh data? Any unsaved edits will be reset.')) {
+      this.dataService.clearAllCache();
+    }
+  }
 }

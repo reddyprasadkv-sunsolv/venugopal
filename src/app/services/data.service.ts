@@ -14,7 +14,8 @@ import {
   SiteSettings
 } from '../models/content.models';
 
-const STORAGE_KEY = 'dr_venugopal_site_data_v2';
+const STORAGE_KEY = 'dr_venugopal_site_data_v3';
+const LEGACY_STORAGE_KEYS = ['dr_venugopal_site_data_v2', 'dr_venugopal_site_data_v1', 'venugopal_site_data'];
 
 const DEFAULT_DATA: SiteData = {
   hero: {
@@ -633,6 +634,30 @@ export class DataService {
 
   private loadInitialData(): SiteData {
     try {
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        // Force clear cache if query param ?clear-cache=true or ?reset-cache=true or ?nocache=...
+        if (urlParams.has('clear-cache') || urlParams.has('reset-cache') || urlParams.has('nocache')) {
+          try {
+            localStorage.removeItem(STORAGE_KEY);
+            LEGACY_STORAGE_KEYS.forEach(k => localStorage.removeItem(k));
+            sessionStorage.clear();
+          } catch (_) {}
+          console.info('[DataService] Cache cleared via URL parameter.');
+          return JSON.parse(JSON.stringify(DEFAULT_DATA));
+        }
+
+        // Automatically purge obsolete legacy cache versions
+        LEGACY_STORAGE_KEYS.forEach(k => {
+          try {
+            if (localStorage.getItem(k)) {
+              localStorage.removeItem(k);
+              console.info(`[DataService] Purged legacy cache key: ${k}`);
+            }
+          } catch (_) {}
+        });
+      }
+
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
@@ -847,6 +872,24 @@ export class DataService {
   }
 
   resetToDefaultData(): void {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      LEGACY_STORAGE_KEYS.forEach(k => localStorage.removeItem(k));
+    } catch (_) {}
     this.persist(JSON.parse(JSON.stringify(DEFAULT_DATA)));
+  }
+
+  clearAllCache(): void {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      LEGACY_STORAGE_KEYS.forEach(k => localStorage.removeItem(k));
+      sessionStorage.clear();
+    } catch (e) {
+      console.error('Error clearing cache:', e);
+    }
+    if (typeof window !== 'undefined') {
+      const cleanUrl = window.location.origin + window.location.pathname + '?nocache=' + Date.now();
+      window.location.href = cleanUrl;
+    }
   }
 }
