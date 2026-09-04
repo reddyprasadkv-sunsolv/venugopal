@@ -1,20 +1,28 @@
 @if (photo(); as p) {
-  <div class="lightbox-backdrop" (click)="onClose()">
-    <button class="lightbox-close" (click)="onClose()" aria-label="Close Lightbox">
+  <div class="lightbox-backdrop" (click)="onBackdropClick($event)">
+    <!-- Floating Top-Right Close Button -->
+    <button type="button" class="lightbox-close" (click)="onClose($event)" aria-label="Close Lightbox" title="Close Lightbox (Esc)">
       <i class="fa-solid fa-xmark"></i>
     </button>
 
     <div class="lightbox-frame glass-card" (click)="$event.stopPropagation()">
+      <!-- Top Bar inside Modal Card with Title & Direct Close Button -->
+      <div class="lightbox-top-bar">
+        <div class="lightbox-top-info">
+          <span class="lightbox-cat-badge">{{ p.category }}</span>
+          <h3 class="lightbox-title">{{ p.title }}</h3>
+        </div>
+        <button type="button" class="lightbox-frame-close" (click)="onClose($event)" aria-label="Close Lightbox" title="Close Lightbox (Esc)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
       <div class="lightbox-image-wrap">
         <img [src]="p.imageUrl" [alt]="p.title" class="lightbox-img">
       </div>
       
       <div class="lightbox-caption-bar">
-        <div class="caption-left">
-          <span class="lightbox-cat-badge">{{ p.category }}</span>
-          <h3 class="lightbox-title">{{ p.title }}</h3>
-          <p class="lightbox-caption-text">{{ p.caption }}</p>
-        </div>
+        <p class="lightbox-caption-text">{{ p.caption }}</p>
         @if (p.location || p.year) {
           <div class="caption-meta">
             @if (p.location) {

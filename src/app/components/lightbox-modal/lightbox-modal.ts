@@ -18,7 +18,18 @@ export class LightboxModalComponent {
     this.onClose();
   }
 
-  onClose(): void {
+  onBackdropClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (target && target.classList.contains('lightbox-backdrop')) {
+      this.onClose(event);
+    }
+  }
+
+  onClose(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     this.close.emit();
   }
 }

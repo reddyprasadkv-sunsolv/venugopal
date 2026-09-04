@@ -8,5 +8,4 @@
 .main-content-canvas {
   flex: 1;
   position: relative;
-  z-index: 1;
 }

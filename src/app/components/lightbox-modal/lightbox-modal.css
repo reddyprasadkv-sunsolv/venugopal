@@ -1,15 +1,16 @@
 .lightbox-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(11, 25, 44, 0.75);
+  background: rgba(11, 25, 44, 0.85);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  z-index: 2500;
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 32px;
   animation: lightboxFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: zoom-out;
 }
 
 @keyframes lightboxFadeIn {
@@ -18,22 +19,24 @@
 }
 
 .lightbox-close {
-  position: absolute;
+  position: fixed;
   top: 24px;
   right: 24px;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 180, 216, 0.3);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 180, 216, 0.4);
   color: var(--text-primary);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all var(--transition-fast);
-  z-index: 10;
+  z-index: 100000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  pointer-events: auto;
 }
 
 .lightbox-close:hover {
@@ -41,6 +44,51 @@
   border-color: var(--c-blue-ocean);
   color: #ffffff;
   transform: rotate(90deg);
+}
+
+.lightbox-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px 12px;
+  border-bottom: 1px solid rgba(0, 119, 182, 0.12);
+  margin-bottom: 12px;
+  gap: 16px;
+}
+
+.lightbox-top-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lightbox-frame-close {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(202, 240, 248, 0.6);
+  border: 1px solid rgba(0, 180, 216, 0.35);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  z-index: 5;
+}
+
+.lightbox-frame-close:hover {
+  background: var(--c-blue-ocean);
+  border-color: var(--c-blue-ocean);
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+.lightbox-frame-close i,
+.lightbox-close i {
+  pointer-events: none;
 }
 
 .lightbox-frame {
