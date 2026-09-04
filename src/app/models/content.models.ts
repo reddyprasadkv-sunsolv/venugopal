@@ -134,11 +134,27 @@ export interface SiteSettings {
   copyrightText: string;
 }
 
+export interface FeaturedVideo {
+  badge: string;
+  title: string;
+  description: string;
+  youtubeUrl: string;
+  stat1Value: string;
+  stat1Label: string;
+  stat2Value: string;
+  stat2Label: string;
+  stat3Value: string;
+  stat3Label: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
 export interface SiteData {
   hero: HeroData;
   profile: AuthorProfile;
   stats: StatMetric[];
   bentoPillars: BentoPillar[];
+  featuredVideo: FeaturedVideo;
   books: Book[];
   awards: Award[];
   services: ServiceItem[];

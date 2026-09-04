@@ -1,6 +1,7 @@
 import { Component, inject, signal, OnInit, ElementRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DataService } from '../../services/data.service';
 import { Book } from '../../models/content.models';
 import { BookModalComponent } from '../../components/book-modal/book-modal';
@@ -15,11 +16,13 @@ import { BookModalComponent } from '../../components/book-modal/book-modal';
 export class HomePageComponent implements OnInit {
   private dataService = inject(DataService);
   private el = inject(ElementRef);
+  private sanitizer = inject(DomSanitizer);
 
   readonly hero = this.dataService.hero;
   readonly profile = this.dataService.profile;
   readonly stats = this.dataService.stats;
   readonly bentoPillars = this.dataService.bentoPillars;
+  readonly featuredVideo = this.dataService.featuredVideo;
   readonly featuredBooks = this.dataService.featuredBooks;
   readonly awards = this.dataService.awards;
   readonly services = this.dataService.services;
@@ -27,6 +30,22 @@ export class HomePageComponent implements OnInit {
   selectedBook = signal<Book | null>(null);
   activeStatCounts = signal<{ [key: string]: number }>({});
   private animatedStats = false;
+
+  getSafeVideoUrl(url: string): SafeResourceUrl {
+    let embedUrl = url || 'https://www.youtube-nocookie.com/embed/vLFxOOEyhUE?iv_load_policy=3&rel=0';
+    if (url) {
+      if (url.includes('watch?v=')) {
+        const videoId = url.split('watch?v=')[1]?.split('&')[0];
+        embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?iv_load_policy=3&rel=0`;
+      } else if (url.includes('youtu.be/')) {
+        const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+        embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?iv_load_policy=3&rel=0`;
+      } else if (!url.startsWith('http') && url.trim().length > 0) {
+        embedUrl = `https://www.youtube-nocookie.com/embed/${url.trim()}?iv_load_policy=3&rel=0`;
+      }
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+  }
 
   ngOnInit(): void {
     this.setupIntersectionObserver();

@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
 import {
@@ -9,6 +10,7 @@ import {
   AuthorProfile,
   StatMetric,
   BentoPillar,
+  FeaturedVideo,
   Book,
   Award,
   ServiceItem,
@@ -22,6 +24,7 @@ export type AdminTab =
   | 'hero' 
   | 'pillars' 
   | 'stats' 
+  | 'video'
   | 'about' 
   | 'services' 
   | 'books' 
@@ -40,6 +43,7 @@ export type AdminTab =
 export class AdminComponent {
   private dataService = inject(DataService);
   private authService = inject(AuthService);
+  private sanitizer = inject(DomSanitizer);
 
   readonly isAuthenticated = this.authService.isAuthenticated;
   readonly siteData = this.dataService.siteData;
@@ -47,6 +51,7 @@ export class AdminComponent {
   readonly profile = this.dataService.profile;
   readonly stats = this.dataService.stats;
   readonly bentoPillars = this.dataService.bentoPillars;
+  readonly featuredVideo = this.dataService.featuredVideo;
   readonly books = this.dataService.books;
   readonly services = this.dataService.services;
   readonly awards = this.dataService.awards;
@@ -70,7 +75,24 @@ export class AdminComponent {
   profileForm = signal<AuthorProfile>(JSON.parse(JSON.stringify(this.profile())));
   pillarsForm = signal<BentoPillar[]>(JSON.parse(JSON.stringify(this.bentoPillars())));
   statsForm = signal<StatMetric[]>(JSON.parse(JSON.stringify(this.stats())));
+  videoForm = signal<FeaturedVideo>(JSON.parse(JSON.stringify(this.featuredVideo())));
   settingsForm = signal<SiteSettings>(JSON.parse(JSON.stringify(this.settings())));
+
+  getSafeVideoUrl(url: string): SafeResourceUrl {
+    let embedUrl = url || 'https://www.youtube-nocookie.com/embed/vLFxOOEyhUE?iv_load_policy=3&rel=0';
+    if (url) {
+      if (url.includes('watch?v=')) {
+        const videoId = url.split('watch?v=')[1]?.split('&')[0];
+        embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?iv_load_policy=3&rel=0`;
+      } else if (url.includes('youtu.be/')) {
+        const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+        embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?iv_load_policy=3&rel=0`;
+      } else if (!url.startsWith('http') && url.trim().length > 0) {
+        embedUrl = `https://www.youtube-nocookie.com/embed/${url.trim()}?iv_load_policy=3&rel=0`;
+      }
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+  }
 
   // Modal / Inline Edit States for CRUD
   editingBook = signal<Book | null>(null);
@@ -137,6 +159,7 @@ export class AdminComponent {
     this.heroForm.set({ ...this.hero() });
     this.profileForm.set(JSON.parse(JSON.stringify(this.profile())));
     this.pillarsForm.set(JSON.parse(JSON.stringify(this.bentoPillars())));
+    this.videoForm.set(JSON.parse(JSON.stringify(this.featuredVideo())));
     this.settingsForm.set(JSON.parse(JSON.stringify(this.settings())));
     this.statsForm.set(JSON.parse(JSON.stringify(this.stats())));
   }
@@ -195,6 +218,11 @@ export class AdminComponent {
   saveStats(): void {
     this.dataService.updateStats(this.statsForm());
     this.showToast('Impact metrics counters updated!');
+  }
+
+  saveVideo(): void {
+    this.dataService.updateFeaturedVideo(this.videoForm());
+    this.showToast('Keynote speech video spotlight updated successfully!');
   }
 
   saveSettings(): void {

@@ -112,6 +112,15 @@
           <button 
             type="button" 
             class="nav-tab-btn" 
+            [class.active]="currentTab() === 'video'" 
+            (click)="setTab('video')">
+            <i class="fa-solid fa-circle-play"></i>
+            <span>Keynote Video</span>
+          </button>
+
+          <button 
+            type="button" 
+            class="nav-tab-btn" 
             [class.active]="currentTab() === 'about'" 
             (click)="setTab('about')">
             <i class="fa-solid fa-user-graduate"></i>
@@ -200,6 +209,7 @@
                 @case ('hero') { <span><i class="fa-solid fa-wand-magic-sparkles"></i> Hero Section & Branding Manager</span> }
                 @case ('pillars') { <span><i class="fa-solid fa-compass"></i> Core Philosophy & Bento Pillars</span> }
                 @case ('stats') { <span><i class="fa-solid fa-chart-simple"></i> Impact Metrics & Statistics Counters</span> }
+                @case ('video') { <span><i class="fa-solid fa-circle-play"></i> Keynote Video & Speech Spotlight</span> }
                 @case ('about') { <span><i class="fa-solid fa-user-graduate"></i> Executive Bio, Degrees & World Records</span> }
                 @case ('services') { <span><i class="fa-solid fa-briefcase"></i> Consulting & Services Manager</span> }
                 @case ('books') { <span><i class="fa-solid fa-book"></i> Book Library & VIP Launches</span> }
@@ -324,6 +334,14 @@
                       <div>
                         <strong>Edit Core Philosophy Bento Pillars</strong>
                         <span>Manage Who Am I, What I Do, Why I Do It, and Milestones</span>
+                      </div>
+                    </button>
+
+                    <button class="quick-hub-item" (click)="setTab('video')">
+                      <i class="fa-solid fa-circle-play"></i>
+                      <div>
+                        <strong>Keynote Address & Video Spotlight</strong>
+                        <span>Edit YouTube video link, headline, subcopy, 3 speaker stats, and CTA button</span>
                       </div>
                     </button>
 
@@ -591,6 +609,167 @@
                     </div>
                   </div>
                 }
+              </div>
+
+            </div>
+          }
+
+
+          <!-- ===============================================================
+               TAB: FEATURED KEYNOTE VIDEO SPOTLIGHT
+               =============================================================== -->
+          @if (currentTab() === 'video') {
+            <div class="video-manager-tab">
+              
+              <div class="tab-action-bar">
+                <div>
+                  <h3>Featured Keynote Address & Video Spotlight</h3>
+                  <p style="color: var(--text-dim); font-size: 0.88rem;">Manage the prominent video spotlight section on the Home Page, including YouTube player, headline, speaker counters, and CTA.</p>
+                </div>
+                <button class="btn btn-primary" (click)="saveVideo()">
+                  <i class="fa-solid fa-floppy-disk"></i> Save Keynote Video
+                </button>
+              </div>
+
+              <div class="admin-panel-grid">
+                
+                <!-- Left Column: Video Spotlight Content & Metrics -->
+                <div class="glass-card admin-form-card">
+                  <div class="card-box-header">
+                    <h4><i class="fa-solid fa-pen-to-square"></i> Keynote Narrative & Speaker Counters</h4>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Badge Pill Text</label>
+                    <input 
+                      type="text" 
+                      [(ngModel)]="videoForm().badge" 
+                      placeholder="e.g. KEYNOTE ADDRESS" 
+                      class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Spotlight Headline</label>
+                    <input 
+                      type="text" 
+                      [(ngModel)]="videoForm().title" 
+                      placeholder="e.g. Visionary Leadership & Educational Innovation" 
+                      class="form-input">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Description / Narrative Summary</label>
+                    <textarea 
+                      [(ngModel)]="videoForm().description" 
+                      rows="4" 
+                      class="form-textarea" 
+                      placeholder="Watch Dr. Chikkala Venugopal Rao deliver an impactful keynote session..."></textarea>
+                  </div>
+
+                  <div class="card-box-header" style="margin-top: 10px;">
+                    <h5 style="font-size: 0.95rem; font-weight: 700; color: var(--c-blue-ocean);"><i class="fa-solid fa-chart-column"></i> 3 Keynote Speaker Statistics</h5>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Stat 1 Number / Value</label>
+                      <input type="text" [(ngModel)]="videoForm().stat1Value" placeholder="125+" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Stat 1 Label</label>
+                      <input type="text" [(ngModel)]="videoForm().stat1Label" placeholder="Keynote Seminars" class="form-input">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Stat 2 Number / Value</label>
+                      <input type="text" [(ngModel)]="videoForm().stat2Value" placeholder="3" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Stat 2 Label</label>
+                      <input type="text" [(ngModel)]="videoForm().stat2Label" placeholder="World Records" class="form-input">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Stat 3 Number / Value</label>
+                      <input type="text" [(ngModel)]="videoForm().stat3Value" placeholder="27K+" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Stat 3 Label</label>
+                      <input type="text" [(ngModel)]="videoForm().stat3Label" placeholder="Delegates" class="form-input">
+                    </div>
+                  </div>
+
+                  <div class="card-box-header" style="margin-top: 10px;">
+                    <h5 style="font-size: 0.95rem; font-weight: 700; color: var(--c-blue-ocean);"><i class="fa-solid fa-arrow-pointer"></i> Call to Action Button</h5>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>CTA Button Text</label>
+                      <input type="text" [(ngModel)]="videoForm().buttonText" placeholder="Invite Dr. Venugopal as Speaker" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label>CTA Button Link</label>
+                      <input type="text" [(ngModel)]="videoForm().buttonLink" placeholder="/contact" class="form-input">
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Right Column: YouTube Link & Live Player Preview -->
+                <div class="glass-card admin-form-card">
+                  <div class="card-box-header">
+                    <h4><i class="fa-brands fa-youtube" style="color: #e63946;"></i> YouTube Media & Live Player Preview</h4>
+                  </div>
+
+                  <div class="form-group">
+                    <label>YouTube Video Link or ID</label>
+                    <input 
+                      type="text" 
+                      [(ngModel)]="videoForm().youtubeUrl" 
+                      placeholder="e.g. https://www.youtube.com/watch?v=vLFxOOEyhUE or vLFxOOEyhUE" 
+                      class="form-input">
+                    <span style="font-size: 0.8rem; color: var(--text-dim); margin-top: 4px; display: block;">
+                      Paste any standard YouTube URL (<code>youtube.com/watch?v=...</code>), share link (<code>youtu.be/...</code>), embed URL, or direct 11-character video ID.
+                    </span>
+                  </div>
+
+                  <!-- Live Video Player Frame -->
+                  <div class="admin-video-preview-wrapper" style="margin-top: 10px;">
+                    <div class="dimension-badge" style="margin-bottom: 8px; display: inline-block;">
+                      <i class="fa-solid fa-eye"></i> Live Interactive Preview
+                    </div>
+                    <div class="admin-video-iframe-wrap" style="position: relative; width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-lg); overflow: hidden; background: #000; box-shadow: 0 12px 30px rgba(0,75,120,0.15); border: 1.5px solid rgba(0,180,216,0.35);">
+                      <iframe 
+                        [src]="getSafeVideoUrl(videoForm().youtubeUrl)" 
+                        title="Keynote Video Preview" 
+                        style="width: 100%; height: 100%; border: none;"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                      </iframe>
+                    </div>
+                  </div>
+
+                  <div style="background: rgba(202, 240, 248, 0.4); border: 1px solid rgba(0, 119, 182, 0.2); border-radius: var(--radius-md); padding: 14px 16px; margin-top: 12px;">
+                    <div style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.84rem; color: var(--text-primary);">
+                      <i class="fa-solid fa-circle-info" style="color: var(--c-blue-ocean); margin-top: 3px;"></i>
+                      <div>
+                        <strong>Real-Time Synchronization:</strong>
+                        <p style="margin: 3px 0 0 0; color: var(--text-dim);">When you click "Save Keynote Video", your changes immediately synchronize to the Home page and persist in local storage.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="btn btn-primary btn-block" style="margin-top: 12px;" (click)="saveVideo()">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Keynote Video
+                  </button>
+
+                </div>
+
               </div>
 
             </div>

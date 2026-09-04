@@ -261,37 +261,37 @@
           <div class="video-text-content">
             <span class="apple-badge">
               <i class="fa-solid fa-circle-play"></i>
-              <span>Keynote Address</span>
+              <span>{{ featuredVideo().badge }}</span>
             </span>
-            <h2>Visionary Leadership & Educational Innovation</h2>
-            <p>
-              Watch Dr. Chikkala Venugopal Rao deliver an impactful keynote session on career transformation, modern management ethics, and unleashing youth potential across educational institutions.
-            </p>
+            <h2>{{ featuredVideo().title }}</h2>
+            <p>{{ featuredVideo().description }}</p>
+            
             <div class="video-speaker-stats">
               <div class="v-stat">
-                <strong>125+</strong>
-                <span>Keynote Seminars</span>
+                <strong>{{ featuredVideo().stat1Value }}</strong>
+                <span>{{ featuredVideo().stat1Label }}</span>
               </div>
               <div class="v-stat">
-                <strong>3</strong>
-                <span>World Records</span>
+                <strong>{{ featuredVideo().stat2Value }}</strong>
+                <span>{{ featuredVideo().stat2Label }}</span>
               </div>
               <div class="v-stat">
-                <strong>27K+</strong>
-                <span>Delegates</span>
+                <strong>{{ featuredVideo().stat3Value }}</strong>
+                <span>{{ featuredVideo().stat3Label }}</span>
               </div>
             </div>
-            <a routerLink="/contact" class="btn btn-primary">
+            
+            <a [routerLink]="featuredVideo().buttonLink" class="btn btn-primary">
               <i class="fa-solid fa-calendar-check"></i>
-              <span>Invite Dr. Venugopal as Speaker</span>
+              <span>{{ featuredVideo().buttonText }}</span>
             </a>
           </div>
 
           <div class="video-embed-wrap">
             <div class="video-frame-container">
               <iframe 
-                src="https://www.youtube-nocookie.com/embed/vLFxOOEyhUE?iv_load_policy=3&rel=0" 
-                title="Dr. Chikkala Venugopal Rao Keynote Video" 
+                [src]="getSafeVideoUrl(featuredVideo().youtubeUrl)" 
+                [title]="featuredVideo().title" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowfullscreen>
               </iframe>

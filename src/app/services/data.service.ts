@@ -5,6 +5,7 @@ import {
   AuthorProfile,
   StatMetric,
   BentoPillar,
+  FeaturedVideo,
   Book,
   Award,
   ServiceItem,
@@ -162,6 +163,20 @@ const DEFAULT_DATA: SiteData = {
       linkUrl: '/about-me'
     }
   ],
+  featuredVideo: {
+    badge: 'Keynote Address',
+    title: 'Visionary Leadership & Educational Innovation',
+    description: 'Watch Dr. Chikkala Venugopal Rao deliver an impactful keynote session on career transformation, modern management ethics, and unleashing youth potential across educational institutions.',
+    youtubeUrl: 'https://www.youtube-nocookie.com/embed/vLFxOOEyhUE?iv_load_policy=3&rel=0',
+    stat1Value: '125+',
+    stat1Label: 'Keynote Seminars',
+    stat2Value: '3',
+    stat2Label: 'World Records',
+    stat3Value: '27K+',
+    stat3Label: 'Delegates',
+    buttonText: 'Invite Dr. Venugopal as Speaker',
+    buttonLink: '/contact'
+  },
   books: [
     {
       id: 'book-1',
@@ -604,6 +619,7 @@ export class DataService {
   readonly profile = computed(() => this.siteDataSignal().profile);
   readonly stats = computed(() => this.siteDataSignal().stats);
   readonly bentoPillars = computed(() => this.siteDataSignal().bentoPillars);
+  readonly featuredVideo = computed(() => this.siteDataSignal().featuredVideo || DEFAULT_DATA.featuredVideo);
   readonly books = computed(() => this.siteDataSignal().books);
   readonly featuredBooks = computed(() => this.siteDataSignal().books.filter(b => b.featured));
   readonly awards = computed(() => this.siteDataSignal().awards);
@@ -627,6 +643,7 @@ export class DataService {
           profile: { ...DEFAULT_DATA.profile, ...(parsed.profile || {}) },
           stats: parsed.stats?.length ? parsed.stats : DEFAULT_DATA.stats,
           bentoPillars: parsed.bentoPillars?.length ? parsed.bentoPillars : DEFAULT_DATA.bentoPillars,
+          featuredVideo: { ...DEFAULT_DATA.featuredVideo, ...(parsed.featuredVideo || {}) },
           books: parsed.books?.length ? parsed.books : DEFAULT_DATA.books,
           awards: parsed.awards?.length ? parsed.awards : DEFAULT_DATA.awards,
           services: parsed.services?.length ? parsed.services : DEFAULT_DATA.services,
@@ -672,6 +689,12 @@ export class DataService {
   updateBentoPillars(bentoPillars: BentoPillar[]): void {
     const current = this.siteDataSignal();
     this.persist({ ...current, bentoPillars });
+  }
+
+  // Featured Video update
+  updateFeaturedVideo(featuredVideo: FeaturedVideo): void {
+    const current = this.siteDataSignal();
+    this.persist({ ...current, featuredVideo });
   }
 
   // Books CRUD
