@@ -134,8 +134,8 @@ export class AdminComponent {
   }
 
   // Authentication
-  login(): void {
-    const success = this.authService.login(this.pinInput());
+  async login(): Promise<void> {
+    const success = await this.authService.login(this.pinInput());
     if (success) {
       this.authError.set('');
       this.pinInput.set('');
@@ -150,9 +150,9 @@ export class AdminComponent {
     this.showToast('Logged out successfully', 'info');
   }
 
-  changePin(): void {
+  async changePin(): Promise<void> {
     if (this.newPinInput().length >= 4) {
-      this.authService.setCustomPin(this.newPinInput());
+      await this.authService.setCustomPin(this.newPinInput());
       this.newPinInput.set('');
       this.showToast('PIN updated successfully!');
     } else {

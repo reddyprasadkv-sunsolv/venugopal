@@ -15,6 +15,10 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="/images/author/venugopal-profile.jpg">
   
+  <!-- Security Meta Tags -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -28,7 +32,63 @@
   <!-- FontAwesome 6 for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body class="apple-intelligence-theme">
+<body class="apple-intelligence-theme" oncontextmenu="return false;">
   <app-root></app-root>
+
+  <!-- Anti-Inspection & Source Code Defense -->
+  <script>
+    (function() {
+      // 1. Disable context menu (Inspect Element)
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+      }, { passive: false });
+
+      // 2. Disable DevTools & Source Inspecting Key Combinations
+      document.addEventListener('keydown', function(e) {
+        // F12
+        if (e.key === 'F12' || e.keyCode === 123) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+Shift+I / Cmd+Opt+I (Inspect)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+Shift+J / Cmd+Opt+J (Console)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+Shift+C / Cmd+Opt+C (Inspect Element Picker)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'C' || e.key === 'c' || e.keyCode === 67)) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+U / Cmd+U (View Source)
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+S / Cmd+S (Save Page Source)
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'S' || e.key === 's' || e.keyCode === 83)) {
+          const tag = e.target && e.target.tagName;
+          if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
+            e.preventDefault();
+            return false;
+          }
+        }
+      }, { passive: false });
+
+      // 3. Prevent dragging images/assets
+      document.addEventListener('dragstart', function(e) {
+        if (e.target && e.target.nodeName === 'IMG') {
+          e.preventDefault();
+          return false;
+        }
+      }, { passive: false });
+    })();
+  </script>
 </body>
 </html>
