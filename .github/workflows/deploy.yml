@@ -34,9 +34,6 @@ jobs:
       - name: Build Angular app
         run: npm run build:gh-pages
 
-      - name: Copy index.html to 404.html for SPA routing
-        run: cp dist/venugopal-app/browser/index.html dist/venugopal-app/browser/404.html
-
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
