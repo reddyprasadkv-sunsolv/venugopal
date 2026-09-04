@@ -138,7 +138,10 @@ export interface FeaturedVideo {
   badge: string;
   title: string;
   description: string;
+  mediaType?: 'video' | 'image';
   youtubeUrl: string;
+  imageUrl?: string;
+  imageAlt?: string;
   stat1Value: string;
   stat1Label: string;
   stat2Value: string;

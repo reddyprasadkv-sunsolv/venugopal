@@ -315,6 +315,25 @@ export class AdminComponent {
     });
   }
 
+  onVideoImageUpload(event: Event): void {
+    this.readImageFile(event, (dataUrl) => {
+      const curr = this.videoForm();
+      this.videoForm.set({
+        ...curr,
+        imageUrl: dataUrl,
+        mediaType: 'image'
+      });
+    });
+  }
+
+  setVideoMediaType(type: 'video' | 'image'): void {
+    const curr = this.videoForm();
+    this.videoForm.set({
+      ...curr,
+      mediaType: type
+    });
+  }
+
   onNewBookCoverUpload(event: Event): void {
     this.readImageFile(event, (dataUrl) => {
       this.newBookForm().coverImage = dataUrl;

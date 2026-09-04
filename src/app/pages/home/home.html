@@ -260,7 +260,7 @@
           
           <div class="video-text-content">
             <span class="apple-badge">
-              <i class="fa-solid fa-circle-play"></i>
+              <i class="fa-solid" [class.fa-circle-play]="featuredVideo().mediaType !== 'image'" [class.fa-image]="featuredVideo().mediaType === 'image'"></i>
               <span>{{ featuredVideo().badge }}</span>
             </span>
             <h2>{{ featuredVideo().title }}</h2>
@@ -288,14 +288,24 @@
           </div>
 
           <div class="video-embed-wrap">
-            <div class="video-frame-container">
-              <iframe 
-                [src]="getSafeVideoUrl(featuredVideo().youtubeUrl)" 
-                [title]="featuredVideo().title" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-              </iframe>
-            </div>
+            @if (featuredVideo().mediaType === 'image' || (!featuredVideo().youtubeUrl && featuredVideo().imageUrl)) {
+              <div class="spotlight-image-container">
+                <img 
+                  [src]="featuredVideo().imageUrl || 'images/ad.jpg'" 
+                  [alt]="featuredVideo().imageAlt || featuredVideo().title" 
+                  class="spotlight-feature-img">
+                <div class="spotlight-img-glare"></div>
+              </div>
+            } @else {
+              <div class="video-frame-container">
+                <iframe 
+                  [src]="getSafeVideoUrl(featuredVideo().youtubeUrl)" 
+                  [title]="featuredVideo().title" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen>
+                </iframe>
+              </div>
+            }
           </div>
 
         </div>
