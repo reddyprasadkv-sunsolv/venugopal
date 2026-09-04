@@ -14,8 +14,8 @@ import {
   SiteSettings
 } from '../models/content.models';
 
-const STORAGE_KEY = 'dr_venugopal_site_data_v3';
-const LEGACY_STORAGE_KEYS = ['dr_venugopal_site_data_v2', 'dr_venugopal_site_data_v1', 'venugopal_site_data'];
+const STORAGE_KEY = 'dr_venugopal_site_data_v4';
+const LEGACY_STORAGE_KEYS = ['dr_venugopal_site_data_v3', 'dr_venugopal_site_data_v2', 'dr_venugopal_site_data_v1', 'venugopal_site_data'];
 
 const DEFAULT_DATA: SiteData = {
   hero: {
@@ -530,10 +530,10 @@ const DEFAULT_DATA: SiteData = {
       id: 'gal-3',
       title: 'Governor Felicitation for Business Excellence',
       category: 'Dignitaries',
-      imageUrl: 'images/ad2.jpg',
-      caption: 'Honored with the Business Excellence Award by Shri Biswa Bhusan Harichandan, Hon\'ble Governor of Andhra Pradesh.',
-      location: 'Raj Bhavan',
-      year: '2023',
+      imageUrl: 'images/gallery/governor-business-excellence.jpg',
+      caption: 'Honored with the coveted Business Excellence Award presented by Hon\'ble Governor Shri Shiv Pratap Shukla at the INDIA & ASIA Business Conclave 2026.',
+      location: 'HITEX, Hyderabad',
+      year: '2026',
       featured: true
     },
     {
