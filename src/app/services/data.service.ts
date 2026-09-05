@@ -386,7 +386,7 @@ const DEFAULT_DATA: SiteData = {
       conferredBy: 'Shri M. Venkaiah Naidu Garu, Former Vice President of India',
       year: '2023',
       description: 'Prestigious ceremonial launch of Beyond Bossing, Campus to Corporate Connect, and Coaching & Mentoring at official vice-presidential forum.',
-      image: 'images/gallery/venkaiah-naidu-book-launch.jpg',
+      image: 'images/gallery/venkaiah-naidu-book-launch.jpg?v=2',
       iconType: 'book-open',
       badgeColor: '#caf0f8'
     },
@@ -522,7 +522,7 @@ const DEFAULT_DATA: SiteData = {
       id: 'gal-2',
       title: 'Ceremonial Book Unveiling',
       category: 'Dignitaries',
-      imageUrl: 'images/gallery/venkaiah-naidu-book-launch.jpg',
+      imageUrl: 'images/gallery/venkaiah-naidu-book-launch.jpg?v=2',
       caption: 'Hon\'ble Former Vice President of India, Shri M. Venkaiah Naidu Garu launching three landmark books by Dr. Venugopal Rao.',
       location: 'Hyderabad',
       year: '2023',
@@ -691,6 +691,7 @@ export class DataService {
         const mergedAwards = DEFAULT_DATA.awards.map(defAward => {
           const userAward = (parsed.awards || []).find((a: Award) => a.id === defAward.id);
           if (!userAward) return defAward;
+          if (defAward.id === 'award-4') userAward.image = defAward.image;
           return { ...defAward, ...userAward };
         });
 
