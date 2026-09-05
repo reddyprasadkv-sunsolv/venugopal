@@ -14,8 +14,8 @@ import {
   SiteSettings
 } from '../models/content.models';
 
-const STORAGE_KEY = 'dr_venugopal_site_data_v4';
-const LEGACY_STORAGE_KEYS = ['dr_venugopal_site_data_v3', 'dr_venugopal_site_data_v2', 'dr_venugopal_site_data_v1', 'venugopal_site_data'];
+const STORAGE_KEY = 'dr_venugopal_site_data_v5';
+const LEGACY_STORAGE_KEYS = ['dr_venugopal_site_data_v4', 'dr_venugopal_site_data_v3', 'dr_venugopal_site_data_v2', 'dr_venugopal_site_data_v1', 'venugopal_site_data'];
 
 const DEFAULT_DATA: SiteData = {
   hero: {
@@ -599,14 +599,14 @@ const DEFAULT_DATA: SiteData = {
     siteName: 'Dr. Chikkala Venugopal Rao',
     tagline: 'Inspiring Positive Educator, Author, Speaker & HR Leader',
     email: 'info@drchikkalavenugopalrao.com',
-    phone: '+91 999 999 9999',
+    phone: '+91 81436 44169',
     address: 'Hyderabad, Telangana, India',
     socials: {
       facebook: 'https://facebook.com',
       twitter: 'https://twitter.com',
       youtube: 'https://youtube.com',
       instagram: 'https://instagram.com',
-      whatsapp: 'https://wa.me/919999999999?text=Hello%20Dr.%20Venugopal',
+      whatsapp: 'https://wa.me/918143644169?text=Hello%20Dr.%20Venugopal',
       linkedin: 'https://linkedin.com'
     },
     copyrightText: '© 2026 Dr. Chikkala Venugopal Rao. All Rights Reserved.'
@@ -664,6 +664,12 @@ export class DataService {
       if (saved) {
         const parsed = JSON.parse(saved);
         const settings = { ...DEFAULT_DATA.settings, ...(parsed.settings || {}) };
+        if (settings.phone === '+91 999 999 9999' || !settings.phone) {
+          settings.phone = DEFAULT_DATA.settings.phone;
+        }
+        if (settings.socials?.whatsapp?.includes('9999999999')) {
+          settings.socials.whatsapp = DEFAULT_DATA.settings.socials.whatsapp;
+        }
         if (settings.copyrightText?.includes('Designed with Apple Intelligence Precision')) {
           settings.copyrightText = DEFAULT_DATA.settings.copyrightText;
         }
