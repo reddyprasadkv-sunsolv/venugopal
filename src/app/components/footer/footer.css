@@ -40,9 +40,37 @@
   gap: 14px;
 }
 
+.footer-brand .footer-brand-crest-link {
+  display: inline-flex;
+  text-decoration: none;
+}
+
 .footer-brand .brand-crest {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 119, 182, 0.4), 0 0 10px rgba(0, 180, 216, 0.25);
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.footer-brand:hover .brand-crest {
+  transform: scale(1.06);
+  box-shadow: 0 6px 20px rgba(0, 119, 182, 0.5), 0 0 16px rgba(0, 180, 216, 0.35);
+}
+
+.footer-brand .crest-monogram {
+  font-weight: 900;
+  font-size: 1.15rem;
+  color: #ffffff;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  user-select: none;
 }
 
 .footer-name {

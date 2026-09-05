@@ -542,4 +542,33 @@ label:has(input[type="checkbox"]) {
   user-select: none;
 }
 
+/* Global Brand Crest Logo */
+.brand-crest {
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-blue-ocean, #0077b6), var(--c-cyan-pacific, #00b4d8));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 14px rgba(0, 119, 182, 0.35);
+  flex-shrink: 0;
+}
+
+.brand-crest.mini {
+  width: 32px;
+  height: 32px;
+}
+
+.brand-crest.mini .crest-monogram {
+  font-size: 0.8rem;
+}
+
+.crest-monogram {
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  user-select: none;
+}
+
 
