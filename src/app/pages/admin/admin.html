@@ -49,7 +49,12 @@
 
         <div class="lock-footer-info">
           <span>Protected Administrative Interface</span>
-          <a routerLink="/" class="back-home-link"><i class="fa-solid fa-arrow-left"></i> Return to Public Site</a>
+          <div style="display: flex; gap: 1.5rem; justify-content: center; align-items: center; margin-top: 0.75rem; flex-wrap: wrap;">
+            <a routerLink="/" class="back-home-link"><i class="fa-solid fa-arrow-left"></i> Return to Public Site</a>
+            <button type="button" (click)="clearCache()" style="background: none; border: none; color: var(--c-blue-ocean, #0077b6); font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0;" title="Clear local site cache and reload latest version">
+              <i class="fa-solid fa-arrows-rotate"></i> Clear Site Cache
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1768,6 +1773,14 @@
                         <i class="fa-solid fa-upload"></i> Restore from JSON
                         <input type="file" accept=".json" (change)="handleImportJson($event)" style="display: none;">
                       </label>
+                    </div>
+
+                    <div class="cache-management-box" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed rgba(0, 119, 182, 0.2);">
+                      <h5>Browser Cache & Local Storage</h5>
+                      <p>Clear all local browser cache, purge stored offline revisions, and force reload the latest code and assets from the server.</p>
+                      <button type="button" class="btn btn-secondary" (click)="clearCache()" style="margin-top: 0.5rem;">
+                        <i class="fa-solid fa-arrows-rotate"></i> Clear Site Cache & Reload
+                      </button>
                     </div>
 
                     <div class="reset-danger-box">
