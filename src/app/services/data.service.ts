@@ -14,12 +14,12 @@ import {
   SiteSettings
 } from '../models/content.models';
 
-const STORAGE_KEY = 'dr_venugopal_site_data_v5';
-const LEGACY_STORAGE_KEYS = ['dr_venugopal_site_data_v4', 'dr_venugopal_site_data_v3', 'dr_venugopal_site_data_v2', 'dr_venugopal_site_data_v1', 'venugopal_site_data'];
+const STORAGE_KEY = 'dr_venugopal_site_data_v6';
+const LEGACY_STORAGE_KEYS = ['dr_venugopal_site_data_v5', 'dr_venugopal_site_data_v4', 'dr_venugopal_site_data_v3', 'dr_venugopal_site_data_v2', 'dr_venugopal_site_data_v1', 'venugopal_site_data'];
 
 const DEFAULT_DATA: SiteData = {
   hero: {
-    badge: 'Inspiring Positive Educator • HR Leader • Author • Speaker',
+    badge: 'Inspiring Positive Educator • HR Leader • Author • Mentor • Speaker',
     titlePrefix: 'Transforming Potential into',
     titleHighlight: 'Extraordinary Success',
     titleSuffix: 'Through Visionary Leadership',
@@ -694,9 +694,14 @@ export class DataService {
           return { ...defAward, ...userAward };
         });
 
+        const hero = { ...DEFAULT_DATA.hero, ...(parsed.hero || {}) };
+        if (hero.badge === 'Inspiring Positive Educator • HR Leader • Author • Speaker' || !hero.badge) {
+          hero.badge = DEFAULT_DATA.hero.badge;
+        }
+
         // Ensure structure completeness
         return {
-          hero: { ...DEFAULT_DATA.hero, ...(parsed.hero || {}) },
+          hero,
           profile: { ...DEFAULT_DATA.profile, ...(parsed.profile || {}) },
           stats: parsed.stats?.length ? parsed.stats : DEFAULT_DATA.stats,
           bentoPillars: parsed.bentoPillars?.length ? parsed.bentoPillars : DEFAULT_DATA.bentoPillars,
